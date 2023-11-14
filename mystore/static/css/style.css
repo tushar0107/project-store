@@ -130,7 +130,7 @@ ul#menu-items li .menu-close{
     display: flex;
     justify-content: center;
     flex-direction: column;
-    gap: 2rem;
+    gap: 6rem;
     margin: 1rem 0.5rem;
 }
 #page-banner-container{
@@ -223,6 +223,7 @@ h2{
     background-color: #1b1b1b;
     color: white;
     padding: 3rem;
+    margin: 6rem auto 0;
 }
 #signup-form{
     display: flex;

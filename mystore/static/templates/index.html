@@ -1,54 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% load static %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static '/css/style.css' %}">
-    <title>Home</title>
-    <script type="text/javascript" src="{% static '/js/index.js' %}"></script>
-</head>
+{% block title %}Home{% endblock %}
 
-<body>
-    <!-- header -->
-    <div id="header">
-        <div class="logo">{{logo}}</div>
-        <div id="mob-nav">
-            <ul>
-                <li><img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search"></li>
-                <li><a href="profile"><img src="{% static '/images/user.png' %}" alt="" class="icon-img"></a></li>
-                <li><img src="{% static '/images/menu.png' %}" alt="" onclick=openMenu() class="icon-img"></li>
-            </ul>
-        </div>
-    </div>
-    <div id="search-input">
-        <form action="product" method="get">
-            <img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search">
-            <input type="text" id="header-input" onkeyup=suggestText() value="" placeholder="Search..">
-            <a href="product"><button type="submit"><img src="{% static '/images/next.png' %}" id="header-submit" class="icon-img" alt=""></button></a>
-            <img src="{% static '/images/close.png' %}" alt="" onclick=closeSearch() class="icon-img search">
-        </form>
-        <div id="suggestion">
-            <ul>
-                <li>abc</li>
-                <li>abc</li>
-                <li>abc</li>
-                <li>abc</li>
-            </ul>
-        </div>
-    </div>
-    <div id="menu-drawer">
-        <ul id="menu-items">
-            <li><a href="javascript:void(0)" class="menu-close" onclick=closeMenu()><img src="{% static '/images/close.png' %}" alt=""></a></li>
-            <li><a href="#">Item 1</a></li>
-            <li><a href="#">Item 2</a></li>
-            <li><a href="#">Item 3</a></li>
-            <li><a href="#">Item 4</a></li>
-            <li><a href="#">Item 5</a></li>
-        </ul>
-    </div>
-
+{% block header %}
+{% endblock %}
     <!-- page content -->
 
     <div id="page-content">
@@ -85,41 +41,9 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
-    <div id="footer">
-        <h2>SUBSCRIBE TO OUR LATEST COLLECTIONS</h2>
-        <div id="signup-form">
-            <input type="email" placeholder="Enter your email">
-            <button type="submit">SUBMIT<img src="{% static '/images/next.png' %}" class="icon-img" alt=""></button>
-        </div>
-        <div id="footer-content">
-            <div class="logo content">LOGO</div>
-            <div class="footer-links content">
-                <ul>
-                    <li><h3>Collections</h3></li>
-                    <li><a href="#">Mens</a></li>
-                    <li><a href="#">Womens</a></li>
-                    <li><a href="#">Kids</a></li>
-                    <li><a href="#">Party</a></li>
-                    <li><a href="#">Winter</a></li>
-                    <li><a href="#">Summer</a></li>
-                </ul>
-            </div>
-            <div class="contact content">
-                <ul>
-                    <li><h3>Contact</h3></li>
-                    <li>linkedin</li>
-                    <li>Github</li>
-                    <li>Mail</li>
-                    <li><a href="tel:7304431820">+91 7304431820</a></li>
-                </ul>
-                
-            </div>
-        </div>
-    </div>
+
+
 </body>
 
 </html>

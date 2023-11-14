@@ -209,11 +209,6 @@ def index(request):
     context = {'logo': "Store"}
     return render(request, 'index.html', context)
 
-def home(request):
-    #to display the home page
-    return render(request,'home.html')
-
-
 def profile(request):
     #to go to profile page of the user
     context = {'logo': "user"}
@@ -231,10 +226,10 @@ def user_login(request):
             login(request,user)
             print("logged in")
             messages.success(request,'Logged In')
-            return redirect('home')
+            return redirect('index')
         else:
             messages.warning(request,'Invalid Credentials. Try again.')
-        return redirect('home')
+        return redirect('index')
     
 
 #user registration form
@@ -269,7 +264,7 @@ def signup(request):
             # user = auth.authenticate(request,username=username,password=password)    #to save the new user object
             login(request,user)  #to log in the new user
             messages.success(request,"Congrats🎉!! Your are a new member to us.😉")
-            return redirect('home')
+            return redirect('index')
 
 def products(request):
     # #fetch out the products from the database with the filter
@@ -297,9 +292,9 @@ def create_order(request):
 
 def user_logout(request):
     #to logout the user
-    logout(request)
-    messages.info(request,"Logged Out.")
-    return redirect('home')
+    # logout(request)
+    # messages.info(request,"Logged Out.")
+    return redirect('index')
 
 def delete_account(request):
     #to delete the user account
