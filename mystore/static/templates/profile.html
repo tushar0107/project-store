@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <!-- header -->
+    <div id="header">
+        <div class="logo">{% if user.is_authenticated %}{{user.firstname}}{% else %}{{logo}}{% endif %}</div>
+        <div id="mob-nav">
+            <ul>
+                <li><a href="product"><img src="{% static '/images/logout.png' %}" alt="logout" class="icon-img search"></a></li>
+                
+            </ul>
+        </div>
+    </div>
+    <div id="profile-container">
+        <div id="profile-head">
+            <img src="{% static '/images/user.png' %}" alt="profile" id="profile-img"/>
+        </div>
+        <div id="profile-card">
+            name
+        </div>
+    </div>
+</body>
+</html>
