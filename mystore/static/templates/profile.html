@@ -10,7 +10,7 @@
 <body>
     <!-- header -->
     <div id="header">
-        <div class="logo">{% if user.is_authenticated %}{{user.firstname}}{% else %}{{logo}}{% endif %}</div>
+        <div class="logo">{% if user.is_authenticated %}{{user.username}}{% else %}{{logo}}{% endif %}</div>
         <div id="mob-nav">
             <ul>
                 <li><a href="logout"><img src="{% static '/images/logout.png' %}" alt="logout" class="icon-img search"></a></li>
@@ -25,6 +25,15 @@
         <div id="profile-card">
             name
         </div>
+    </div>
+
+    <div id="login-modal">
+        <h3>Login</h3>
+        <form action="login">
+            <input type="text" name="username" id="username"/>
+            <input type="password" name="password" id="password">
+            
+        </form>
     </div>
 </body>
 </html>

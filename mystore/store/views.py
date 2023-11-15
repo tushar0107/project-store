@@ -267,20 +267,23 @@ def signup(request):
             return redirect('index')
 
 def products(request):
-    # #fetch out the products from the database with the filter
-    # search_product = request.GET['product']
-    # # products_list = Product.objects.filter(name__contains=search_product)
-    # products_list = list(products_list)
-    # if len(products_list)!=0:
-    #     #counts the number of products found in the database
-    #     num_of_products = len(products_list)
-    #     return render(request,'products.html',{'products':products_list,'num_of_products':num_of_products,'search':search_product})
+    #fetch out the products from the database with the filter
+    search_product = request.GET['product']
+    products_list = Product.objects.filter(name__icontains=search_product)
+    products_list = list(products_list)
+    if len(products_list)!=0:
+        #counts the number of products found in the database
+        num_of_products = len(products_list)
+        return render(request,'product.html',{
+            'products':products_list,
+            'num_of_products':num_of_products,
+            'search':search_product,
+            'logo':"STORE"})
 
-    # else:
-    #     #returns nothing if no products found with the relevant name
-    #     num_of_products = 'No'
-    #     return render(request, 'products.html',{'num_of_products':num_of_products})
-    return render(request, 'product.html', {'logo':'STORE'})
+    else:
+        #returns nothing if no products found with the relevant name
+        num_of_products = '0'
+        return render(request, 'product.html',{'num_of_products':num_of_products})
 
 def products_by_category(request):
     #fetch products from the database wy filtering through categories
@@ -289,12 +292,19 @@ def products_by_category(request):
 def create_order(request):
     pass
 
+def cart(request):
 
-def user_logout(request):
+    return render(request, 'cart.html', {'logo': "Cart"})
+
+def checkout(request):
+
+    return render(request, 'checkout.html', {'logo':'Checkout'})
+
+def logout(request):
     #to logout the user
     # logout(request)
     # messages.info(request,"Logged Out.")
-    return redirect('index')
+    return render(request,'index.html', {'logo':'STORE'})
 
 def delete_account(request):
     #to delete the user account
