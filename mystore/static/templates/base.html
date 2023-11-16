@@ -23,18 +23,18 @@
             <ul>
                 <li><img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search">
                 </li>
-                <li><a href="profile"><img src="{% static '/images/user.png' %}" alt="" class="icon-img"></a></li>
-                <li><a href="cart"><img src="{% static '/images/cart.png' %}" alt="" class="icon-img"></a></li>
+                <li><a href="/profile"><img src="{% static '/images/user.png' %}" alt="" class="icon-img"></a></li>
+                <li><a href="/cart"><img src="{% static '/images/cart.png' %}" alt="" class="icon-img"></a></li>
                 <li><img src="{% static '/images/menu.png' %}" alt="" onclick=openMenu() class="icon-img"></li>
             </ul>
         </div>
     </div>
     <div id="search-input">
-        <form action="product" method="get">
+        <form action="/product" method="get">
             <img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search">
             <input type="text" id="header-input" onkeyup=suggestText() value="" name="product" placeholder="Search..">
-            <a href="product"><button type="submit"><img src="{% static '/images/next.png' %}" id="header-submit"
-                        class="icon-img" alt=""></button></a>
+            <button type="submit"><img src="{% static '/images/next.png' %}" id="header-submit"
+                        class="icon-img" alt=""></button>
             <img src="{% static '/images/close.png' %}" alt="" onclick=closeSearch() class="icon-img search">
         </form>
         <div id="suggestion">

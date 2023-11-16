@@ -7,6 +7,8 @@ from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from django.http import JsonResponse
 from django.middleware import csrf
@@ -218,18 +220,18 @@ def profile(request):
 def user_login(request):
     #gets form input only if the form action method is POST
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(request,username=username,password=password)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request,username=username,password=password)
         #this function works only if user is not logged in 
         if user is not None:
             login(request,user)
-            print("logged in")
-            messages.success(request,'Logged In')
-            return redirect('index')
+            return redirect(profile)
         else:
             messages.warning(request,'Invalid Credentials. Try again.')
-        return redirect('index')
+        return redirect(profile)
+    else:
+        return redirect(profile)
     
 
 #user registration form
@@ -246,13 +248,13 @@ def signup(request):
         #if already registred email found, it sends a message and redirects to login
         if User.objects.filter(email=email).exists():
             messages.warning(request,'Email already registered. Login or try another email.')
-            return redirect('user_login')
+            return redirect(profile)
         
         #checks if username is already registered or not,
         #if already registred username found, it sends a message and redirects to login
         if User.objects.filter(username=username).exists():
             messages.warning(request, 'Username has been used already, Try Logging in.')
-            return redirect('user_login')
+            return redirect(profile)
         #if all credentials are valid a user object is created
         else:
             user = User.objects.create_user(
@@ -264,7 +266,7 @@ def signup(request):
             # user = auth.authenticate(request,username=username,password=password)    #to save the new user object
             login(request,user)  #to log in the new user
             messages.success(request,"Congrats🎉!! Your are a new member to us.😉")
-            return redirect('index')
+            return redirect(index)
 
 def products(request):
     #fetch out the products from the database with the filter
@@ -296,25 +298,28 @@ def cart(request):
 
     return render(request, 'cart.html', {'logo': "Cart"})
 
+@login_required(login_url='/login/')
 def checkout(request):
+
 
     return render(request, 'checkout.html', {'logo':'Checkout'})
 
-def logout(request):
+def user_logout(request):
     #to logout the user
-    # logout(request)
-    # messages.info(request,"Logged Out.")
-    return render(request,'index.html', {'logo':'STORE'})
+    logout(request)
+    messages.info(request,"Logged Out.")
+    return redirect(index)
 
 def delete_account(request):
     #to delete the user account
     try:
-        username = request.user.username
-        password = request.POST['password']
-        user = auth.authenticate(request, username=username, password=password)
-        user.delete()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if(user is not None):
+            user.delete()
         messages.success(request,"User deleted. Redirecting you to home.")
-        return redirect(request,'home')
+        return redirect(index)
     except User.DoesNotExist:
         messages.error(request,"User does not exists.")
-        return redirect(request,'home')
+        return redirect(index)

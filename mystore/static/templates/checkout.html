@@ -22,14 +22,7 @@
 
 
     {% if user.is_authenticated %}
-        <div id="profile-container">
-            <div id="profile-head">
-                <img src="{% static '/images/user.png' %}" alt="profile" id="profile-img"/>
-            </div>
-            <div id="profile-card">
-                name
-            </div>
-        </div>
+        <h2>checkout</h2>
 
     {% else %}
         <div id="login-modal">
@@ -45,19 +38,6 @@
                 <button type="submit" class="submit">Submit</button>
             </form>
         </div>
-            <!-- {% if messages %}
-                {% for msg in messages %}
-            <script>
-                alert("{{msg}}");
-            </script>
-                {% endfor %}
-            {% else %}
-            <script>
-
-            </script>
-
-            {% endif %} -->
-        
 
     {% endif %}
 

@@ -36,3 +36,12 @@ const openMenu = ()=>{
 const closeMenu = ()=>{
     document.getElementById('menu-drawer').style.right = "-70%";
 }
+const togglePassword = (eye)=>{
+    if(eye){
+        document.getElementById('password').type = 'password';
+        document.getElementById('pass-eye').style.display = 'none';
+    }else{
+        document.getElementById('password').type = 'text';
+        document.getElementById('pass-eye').style.display = 'block';
+    }
+}
