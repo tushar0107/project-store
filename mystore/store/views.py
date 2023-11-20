@@ -299,10 +299,16 @@ def cart(request):
     return render(request, 'cart.html', {'logo': "Cart"})
 
 @login_required(login_url='/login/')
-def checkout(request):
+def checkout(request,id):
+    if request.user.is_authenticated:
+        product = Product.objects.get(id=id)
+        return render(request, 'checkout.html', {'logo':'Checkout','product':product})
+    else:
+        return redirect(login)
 
-
-    return render(request, 'checkout.html', {'logo':'Checkout'})
+def create_order_item(request):
+    
+    pass
 
 def user_logout(request):
     #to logout the user

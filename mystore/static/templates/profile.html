@@ -32,19 +32,7 @@
         </div>
 
     {% else %}
-        <div id="login-modal">
-            <h3>Login</h3>
-            <form action="/login/" method="post">
-                {% csrf_token %}
-                <input type="text" name="username" class="username input" placeholder="Enter username"/>
-                <label for="password" class="password-toggle">
-                    <input type="password" name="password" id="password" class="password input" placeholder="Enter Password"/>
-                    <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="pass-eye" onclick=togglePassword(true)>
-                    <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="pass-hide" onclick=togglePassword(false)>
-                </label>
-                <button type="submit" class="submit">Submit</button>
-            </form>
-        </div>
+      
             <!-- {% if messages %}
                 {% for msg in messages %}
             <script>
@@ -57,9 +45,38 @@
             </script>
 
             {% endif %} -->
-        
+            <div id="login-modal">
+                <h3>Login</h3>
+                <form action="/login/" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="username" class="username input" placeholder="Enter username"/>
+                    <label for="password" class="password-toggle">
+                        <input type="password" name="password" id="password" class="password input" placeholder="Enter Password"/>
+                        <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="pass-eye" onclick=togglePassword(false)>
+                        <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="pass-hide" onclick=togglePassword(true)>
+                    </label>
+                    <button type="submit" class="submit">Submit</button>
+                </form>
+            </div>
 
     {% endif %}
+    <div id="register-modal">
+        <h3>Register</h3>
+        <form action="/register/" method="post">
+            <input type="text" name="username" class="username input" placeholder="Enter username"/>
+            <label for="password" class="password-toggle">
+                <input type="password" name="password" id="reg-password" class="password input" placeholder="Enter Password"/>
+                <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="reg-pass-eye" onclick=toggleRegisterPassword(false)>
+                <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="reg-pass-hide" onclick=toggleRegisterPassword(true)>
+            </label>
+            <label for="password" class="password-toggle">
+                <input type="password" name="password" id="reg-conf-password" class="password input" placeholder="Confirm Password"/>
+                <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="conf-pass-eye" onclick=toggleRegisterConfirmPassword(false)>
+                <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="conf-pass-hide" onclick=toggleRegisterConfirmPassword(true)>
+            </label>
+            <button type="submit" class="submit">Submit</button>
+        </form>
+    </div>
 
 </body>
 </html>

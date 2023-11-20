@@ -306,7 +306,7 @@ h2{
     display: block;
     width: 100%;
     aspect-ratio: 1/1;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 4px;
 }
 .product-desc{
@@ -378,7 +378,7 @@ h2{
 
 
 /* login form css */
-#login-modal{
+#login-modal, #register-modal{
     width: min(700px, 90%);
     margin: 4rem auto;
     border: 2px solid grey;
@@ -387,7 +387,8 @@ h2{
     /* padding: 1rem; */
 }
 
-#login-modal form .input, #login-modal form .submit{
+#login-modal form .input, #login-modal form .submit,
+#register-modal form .input,  #register-modal form .submit{
     display: block;
     width: 90%;
     margin: 2rem auto;
@@ -406,6 +407,7 @@ h2{
     background-color: white;
 }
 .password-toggle img.view{
+    display: none;
     z-index: 5;
 }
 .password-toggle img.hide{

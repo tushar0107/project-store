@@ -1,18 +1,18 @@
-window.onscroll = ()=>{
-    if (window.scrollY > 50){
-        scroll = window.scrollY;
-        $("#header").addClass('hide');
-    }else if(window.scrollY > -50){
-        $("#header").removeClass('hide');
-    }
-    // if(document.body.scrollTop > 50 || document.documentElement.scrollTop > 50){
-    //     document.getElementById('header').style.top = "-4rem";
-    // }else if(document.body.scrollTop > -50 || document.documentElement.scrollTop > -50){
-    //     document.getElementById('header').style.top = "0";
-    // }else{
-    //     document.getElementById('header').style.top = "0";
-    // }
-}
+// window.onscroll = ()=>{
+//     if (window.scrollY > 50){
+//         scroll = window.scrollY;
+//         $("#header").addClass('hide');
+//     }else if(window.scrollY > -50){
+//         $("#header").removeClass('hide');
+//     }
+//     // if(document.body.scrollTop > 50 || document.documentElement.scrollTop > 50){
+//     //     document.getElementById('header').style.top = "-4rem";
+//     // }else if(document.body.scrollTop > -50 || document.documentElement.scrollTop > -50){
+//     //     document.getElementById('header').style.top = "0";
+//     // }else{
+//     //     document.getElementById('header').style.top = "0";
+//     // }
+// }
 
 const openSearch = ()=>{
     closeMenu();
@@ -38,10 +38,30 @@ const closeMenu = ()=>{
 }
 const togglePassword = (eye)=>{
     if(eye){
-        document.getElementById('password').type = 'password';
-        document.getElementById('pass-eye').style.display = 'none';
-    }else{
         document.getElementById('password').type = 'text';
         document.getElementById('pass-eye').style.display = 'block';
+    }else{
+        document.getElementById('password').type = 'password';
+        document.getElementById('pass-eye').style.display = 'none';
+    }
+}
+
+const toggleRegisterPassword = (eye)=>{
+    if(eye){
+        document.getElementById('reg-password').type = 'text';
+        document.getElementById('reg-pass-eye').style.display = 'block';
+    }else{
+        document.getElementById('reg-password').type = 'password';
+        document.getElementById('reg-pass-eye').style.display = 'none';
+    }
+}
+
+const toggleRegisterConfirmPassword = (eye)=>{
+    if(eye){
+        document.getElementById('reg-conf-password').type = 'text';
+        document.getElementById('conf-pass-eye').style.display = 'block';
+    }else{
+        document.getElementById('reg-conf-password').type = 'password';
+        document.getElementById('conf-pass-eye').style.display = 'none';
     }
 }

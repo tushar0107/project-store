@@ -23,21 +23,25 @@
 
     {% if user.is_authenticated %}
         <h2>checkout</h2>
+        <h2>{{id}}</h2>
 
-    {% else %}
-        <div id="login-modal">
-            <h3>Login</h3>
-            <form action="/login/" method="post">
-                {% csrf_token %}
-                <input type="text" name="username" class="username input" placeholder="Enter username"/>
-                <label for="password" class="password-toggle">
-                    <input type="password" name="password" id="password" class="password input" placeholder="Enter Password"/>
-                    <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="pass-eye" onclick=togglePassword(true)>
-                    <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="pass-hide" onclick=togglePassword(false)>
-                </label>
-                <button type="submit" class="submit">Submit</button>
-            </form>
+    <div id="checkout-form">
+        <form action="/create-order-item" method="post"></form>
+        <div class="product-card">
+            <a href="#"><img src="{% static '/images/heart.png' %}" alt="" class="icon-img like-img"></a>
+            <a href="#"><img src="{% static '/images/heart-like.png' %}" alt="" class="icon-img like-img like-pink"></a>
+            <img src="/media/{{product.image}}" alt="" class="product-img">
+            <div class="product-details">
+                <p class="product-name">{{product.name}}</p>
+                <p class="product-desc">{{product.desc}}</p>
+                <p class="product-price">{{product.price}}/-</p>
+                
+            </div>
         </div>
+
+        <button type="submit">Buy</button>
+    </div>
+
 
     {% endif %}
 
