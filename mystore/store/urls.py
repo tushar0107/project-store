@@ -13,5 +13,7 @@ urlpatterns = [
     path('cart/',views.cart,name="cart page for user"),
     path('checkout/<int:id>/',views.checkout, name="checkout page"),
     path('login/',views.user_login,name="user login"),
+    path('create-order-item/',views.create_order_item,name="add item to order item"),
+    path('confirm-order/', views.confirm_order, name="create order for user"),
 
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

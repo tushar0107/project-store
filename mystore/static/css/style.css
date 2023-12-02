@@ -415,6 +415,25 @@ h2{
 }
 
 
+/* checkout form */
+
+#checkout-form{
+    width: 96%;
+    margin: 0 auto;
+}
+#checkout-form .submit-btn{
+    width: 50%;
+    margin: 1rem auto;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    background-color: #0077ff;
+    color: white;
+}
+
+
+
+
 /* If the browser window is 612px or smaller, */
 @media only screen and (min-width:612px) {
     #featured-products{

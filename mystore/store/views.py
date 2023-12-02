@@ -291,7 +291,8 @@ def products_by_category(request):
     #fetch products from the database wy filtering through categories
     pass
 
-def create_order(request):
+def confirm_order(request):
+
     pass
 
 def cart(request):
@@ -307,8 +308,14 @@ def checkout(request,id):
         return redirect(login)
 
 def create_order_item(request):
-    
-    pass
+    product_id = request.POST.get('product_id')
+    quantity = request.POST.get('quantity') or 1
+    print(product_id)
+    print(request.user.id)
+    customer = Customer.objects.get(id=request.user.id)
+    product = Product.objects.get(id=product_id)
+    order_item = OrderItem.objects.create(customer=customer, product=product,quantity=quantity,total_amount=(product.price*quantity))
+    return render(request, 'confirm-order.html', {'logo':'Confirm Order','product':product, "order_item":order_item})
 
 def user_logout(request):
     #to logout the user

@@ -26,23 +26,26 @@
         <h2>{{id}}</h2>
 
     <div id="checkout-form">
-        <form action="/create-order-item" method="post"></form>
-        <div class="product-card">
-            <a href="#"><img src="{% static '/images/heart.png' %}" alt="" class="icon-img like-img"></a>
-            <a href="#"><img src="{% static '/images/heart-like.png' %}" alt="" class="icon-img like-img like-pink"></a>
-            <img src="/media/{{product.image}}" alt="" class="product-img">
-            <div class="product-details">
-                <p class="product-name">{{product.name}}</p>
-                <p class="product-desc">{{product.desc}}</p>
-                <p class="product-price">{{product.price}}/-</p>
-                
-            </div>
-        </div>
+        <form action="/create-order-item/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{product.id}}">
+            <div class="product-card">
+                <a href="#"><img src="{% static '/images/heart.png' %}" alt="" class="icon-img like-img"></a>
+                <a href="#"><img src="{% static '/images/heart-like.png' %}" alt="" class="icon-img like-img like-pink"></a>
+                <img src="/media/{{product.image}}" alt="" class="product-img">
+                <div class="product-details">
+                    <p class="product-name">{{product.name}}</p>
+                    <p class="product-desc">{{product.desc}}</p>
+                    <p class="product-price">{{product.price}}/-</p>
 
-        <button type="submit">Buy</button>
+                </div>
+            </div>
+        
+            <button class="submit-btn" type="submit">Buy</button>
+        </form>
     </div>
 
-
+    
     {% endif %}
 
 </body>
