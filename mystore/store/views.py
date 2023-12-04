@@ -309,12 +309,15 @@ def checkout(request,id):
 
 def create_order_item(request):
     product_id = request.POST.get('product_id')
-    quantity = request.POST.get('quantity') or 1
-    print(product_id)
-    print(request.user.id)
-    customer = Customer.objects.get(id=request.user.id)
+    quantity = request.POST.get('quantity')
     product = Product.objects.get(id=product_id)
-    order_item = OrderItem.objects.create(customer=customer, product=product,quantity=quantity,total_amount=(product.price*quantity))
+    amount = int(product.price)*int(quantity)
+    order_item = OrderItem.objects.create(
+        user=request.user, 
+        product=product,
+        quantity=quantity,
+        total_amount=amount
+    )
     return render(request, 'confirm-order.html', {'logo':'Confirm Order','product':product, "order_item":order_item})
 
 def user_logout(request):

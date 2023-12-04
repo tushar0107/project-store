@@ -25,24 +25,30 @@
         <h2>checkout</h2>
         <h2>{{id}}</h2>
 
-    <div id="checkout-form">
-        <form action="/create-order-item/" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{product.id}}">
-            <div class="product-card">
-                <a href="#"><img src="{% static '/images/heart.png' %}" alt="" class="icon-img like-img"></a>
-                <a href="#"><img src="{% static '/images/heart-like.png' %}" alt="" class="icon-img like-img like-pink"></a>
-                <img src="/media/{{product.image}}" alt="" class="product-img">
-                <div class="product-details">
-                    <p class="product-name">{{product.name}}</p>
-                    <p class="product-desc">{{product.desc}}</p>
-                    <p class="product-price">{{product.price}}/-</p>
 
+    <div id="checkout">
+        <div id="checkout-form">
+            <form action="/create-order-item/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{product.id}}">
+                <div class="checkout-product-card">
+                    <img src="/media/{{product.image}}" alt="" class="product-img">
+                    <div class="product-details">
+                        <p class="product-name">Minimalists Analog Watch - For Men 38024PP24</p>
+
+                        <div class="modify-quantity">
+                            <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
+                            <input type="number" id="product-{{product.id}}" name="quantity" value="1" readonly>
+                            <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+                        </div>
+                        <input type="number" class="product-price price" name="amount" value="{{product.price}}" id="price-{{product.id}}" step="0.01" readonly>
+                    </div>
                 </div>
-            </div>
-        
-            <button class="submit-btn" type="submit">Buy</button>
-        </form>
+                <br>
+            
+                <button type="submit" class="submit-btn form-btn">Buy</button><button type="button" class="cancel-btn form-btn" onclick="cancelBtn()">Cancel</button>
+            </form>
+        </div>
     </div>
 
     

@@ -59,10 +59,10 @@ class Customer(models.Model):
     pincode = models.PositiveIntegerField()
     
     def _str__(self):
-        return self.user.username
+        return str(f'{self.user}')
     
 class OrderItem(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='1',)
     product = models.ForeignKey(Product,on_delete=models.CASCADE,default='')
     quantity = models.PositiveIntegerField(default=1)
     date_ordered = models.DateTimeField(auto_now_add=True)
@@ -70,7 +70,7 @@ class OrderItem(models.Model):
     details = models.TextField(default='',blank=True)
 
     def __str__(self):
-        return str(f'Order ,{self.customer.user.username}')
+        return str(f'Order by ,{self.user.username}')
 
 class Order(models.Model):
     order = models.ForeignKey(OrderItem, on_delete=models.CASCADE, default="")
@@ -79,7 +79,7 @@ class Order(models.Model):
     payment_mode = models.CharField(max_length=20,choices=MODES, default='')
     payment_status = models.CharField(max_length=20,choices=PAY_STATUS, default='Pending')
     def __str__(self):
-        return str(f'{self.order.quantity} x {self.order.product.name} for {self.order.customer.user.username} ')
+        return str(f'{self.order.quantity} x {self.order.product.name} for {self.order.user.username} ')
 
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
