@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <script type="text/javascript" src="{% static '/js/index.js' %}"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- header -->
+    <div id="header">
+        <div class="logo">{% if user.is_authenticated %}{{user.username}}{% else %}{{logo}}{% endif %}</div>
+        <div id="mob-nav">
+            <ul>
+                <li><a href="/logout"><img src="{% static '/images/logout.png' %}" alt="logout" class="icon-img search"></a></li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    {% if user.is_authenticated %}
+        <div id="profile-container">
+            <div id="profile-head">
+                <img src="{% static '/images/user.png' %}" alt="profile" id="profile-img"/>
+            </div>
+            <div id="profile-card">
+                name
+            </div>
+        </div>
+
+    {% else %}
+      
+            <!-- {% if messages %}
+                {% for msg in messages %}
+            <script>
+                alert("{{msg}}");
+            </script>
+                {% endfor %}
+            {% else %}
+            <script>
+
+            </script>
+
+            {% endif %} -->
+            <div id="login-modal">
+                <h3>Login</h3>
+                <form action="/login/" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="username" class="username input" placeholder="Enter username"/>
+                    <label for="password" class="password-toggle">
+                        <input type="password" name="password" id="password" class="password input" placeholder="Enter Password"/>
+                        <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="pass-eye" onclick=togglePassword(false)>
+                        <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="pass-hide" onclick=togglePassword(true)>
+                    </label>
+                    <button type="submit" class="submit">Submit</button>
+                </form>
+            </div>
+
+    {% endif %}
+    <div id="register-modal">
+        <h3>Register</h3>
+        <form action="/register/" method="post">
+            <input type="text" name="username" class="username input" placeholder="Enter username"/>
+            <label for="password" class="password-toggle">
+                <input type="password" name="password" id="reg-password" class="password input" placeholder="Enter Password"/>
+                <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="reg-pass-eye" onclick=toggleRegisterPassword(false)>
+                <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="reg-pass-hide" onclick=toggleRegisterPassword(true)>
+            </label>
+            <label for="password" class="password-toggle">
+                <input type="password" name="password" id="reg-conf-password" class="password input" placeholder="Confirm Password"/>
+                <img src="{% static '/images/view.png' %}" alt="" class="icon-img view" id="conf-pass-eye" onclick=toggleRegisterConfirmPassword(false)>
+                <img src="{% static '/images/hide.png' %}" alt="" class="icon-img hide" id="conf-pass-hide" onclick=toggleRegisterConfirmPassword(true)>
+            </label>
+            <button type="submit" class="submit">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>
