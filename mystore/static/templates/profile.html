@@ -63,6 +63,7 @@
     <div id="register-modal">
         <h3>Register</h3>
         <form action="/register/" method="post">
+            {% csrf_token %}
             <input type="text" name="username" class="username input" placeholder="Enter username"/>
             <label for="password" class="password-toggle">
                 <input type="password" name="password" id="reg-password" class="password input" placeholder="Enter Password"/>
