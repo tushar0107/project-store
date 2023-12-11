@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
 dotenv_path = os.path.join(os.path.dirname(__file__),'.env')
 
 load_dotenv()
@@ -27,12 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-with open('/etc/secret_key.txt') as f:
-    SECRET_KEY = f.read().strip()
-# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') | False
+DEBUG = os.getenv('DEBUG') or False
 
 ALLOWED_HOSTS = ['my-store-49td.onrender.com', '127.0.0.1']
 
