@@ -100,3 +100,17 @@ function subQuantity(id, price){
         amount.value = parseFloat(amount.value) - price;
     }
 }
+
+//Add to cart button
+function addToCart(id, name, price){
+    var cart = [];
+    if(localStorage.getItem('Cart')==null){
+        localStorage.setItem('Cart',JSON.stringify(cart));
+    }else{
+        var local = localStorage.getItem('Cart');
+        cart = JSON.parse(local);
+    }
+    cart[cart.length] = ({product_id:id, product_name:name, quantity:1, price:price});
+    console.log(cart);
+    localStorage.setItem('Cart', JSON.stringify(cart));
+}

@@ -291,9 +291,7 @@ def products_by_category(request):
     #fetch products from the database wy filtering through categories
     pass
 
-def confirm_order(request):
 
-    pass
 
 def cart(request):
 
@@ -319,6 +317,10 @@ def create_order_item(request):
         total_amount=amount
     )
     return render(request, 'confirm-order.html', {'logo':'Confirm Order','product':product, "order_item":order_item})
+
+def confirm_order(request):
+    
+    pass
 
 def user_logout(request):
     #to logout the user

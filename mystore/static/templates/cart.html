@@ -4,10 +4,30 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<script>
+    console.log('in cart');
+    var cart = JSON.parse(localStorage.getItem('Cart'));
+    console.log(cart);
+    var container = document.getElementById('cart-container');
+    for(let p=0; p<cart.length;p++){
+        let ele = document.createElement('div');
+        ele.classList.add('cart-product');
+        let prod_ele = document.createElement('p');
+        prod_ele.innerHTML = cart[p].product_name;
+        ele.appendChild(prod_ele);
+        document.body.appendChild(ele);
+    }
+</script>
 
 <div id="cart-container">
     <div class="cart-product">
-        product1
+        <p>SAMSUNG Galaxy S22 5G (Green, 128 GB) (8 GB RAM)</p>
+        <div class="modify-quantity">
+            <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
+            <input type="number" id="product-{{product.id}}" name="quantity" value="1" readonly>
+            <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+        </div>
+        <input type="number" class="product-price price" name="amount" value="{{product.price}}" id="price-{{product.id}}" step="0.01" readonly>
     </div>
 </div>
 

@@ -14,10 +14,10 @@
             <img src="/media/{{product.image}}" alt="" class="product-img">
             <div class="product-details">
                 <p class="product-name">{{product.name}}</p>
-                <p class="product-desc">{{product.desc}}</p>
+                <p class="product-desc">{{product.desc|truncatewords_html:50}}</p>
                 <p class="product-price">{{product.price}}/-</p>
                 <div class="btns">
-                    <a href="/cart"><button><img src="{% static '/images/addcart.png' %}" alt="" class="icon-img"/></button></a>
+                    <a href="/cart"><button onclick="addToCart({{product.id}},'{{product.name}}',{{product.price}})"><img src="{% static '/images/addcart.png' %}" alt="" class="icon-img"/></button></a>
                     <a href="/checkout/{{product.id}}"><button>Buy</button></a >
                 </div>
             </div>
