@@ -11,7 +11,7 @@
 <body>
     <!-- header -->
     <div id="header">
-        <div class="logo">{% if user.is_authenticated %}{{user.username}}{% else %}{{logo}}{% endif %}</div>
+        <h3 class="logo">{% if user.is_authenticated %}{{user.first_name}} {{user.last_name}}{% else %}{{user}}{% endif %}</h3>
         <div id="mob-nav">
             <ul>
                 <li><a href="/logout"><img src="{% static '/images/logout.png' %}" alt="logout" class="icon-img search"></a></li>
@@ -27,7 +27,7 @@
                 <img src="{% static '/images/user.png' %}" alt="profile" id="profile-img"/>
             </div>
             <div id="profile-card">
-                name
+                {{user.username}}
             </div>
         </div>
 

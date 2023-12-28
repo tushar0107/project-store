@@ -6,6 +6,7 @@
 {% block content %}
 
     <!-- products here -->
+    <h4 class="product-count">{{num_of_products}} products for '{{search}}'</h4>
     <div id="product-container">
         {% for product in products %}
         <div class="product-card">
@@ -13,11 +14,11 @@
             <a href="#"><img src="{% static '/images/heart-like.png' %}" alt="" class="icon-img like-img like-pink"></a>
             <img src="/media/{{product.image}}" alt="" class="product-img">
             <div class="product-details">
-                <p class="product-name">{{product.name}}</p>
-                <p class="product-desc">{{product.desc|truncatewords_html:50}}</p>
+                <strong class="product-name">{{product.name|truncatewords_html:5}}</strong>
+                <p class="product-desc">{{product.desc|truncatewords_html:15}}</p>
                 <p class="product-price">{{product.price}}/-</p>
                 <div class="btns">
-                    <a href="/cart"><button onclick="addToCart({{product.id}},'{{product.name}}',{{product.price}})"><img src="{% static '/images/addcart.png' %}" alt="" class="icon-img"/></button></a>
+                    <a href="#"><button onclick="submitCart({{user.id}},{{product.id}})"><img src="{% static '/images/addcart.png' %}" alt="" class="icon-img"/></button></a>
                     <a href="/checkout/{{product.id}}"><button>Buy</button></a >
                 </div>
             </div>
@@ -25,6 +26,35 @@
         {% endfor %}
     </div>
  
+    <script>
+
+        
+            function submitCart(user,product_id){
+                console.log('submitting form with', user, product_id);
+                var xhr = new XMLHttpRequest();
+                let cookie = document.cookie;
+                var csrfToken = localStorage.getItem('csrfToken');
+
+                var formData = new FormData();
+                formData.append('csrfmiddlewaretoken',csrfToken);
+                formData.append('user_id',user);
+                formData.append('product_id',product_id);
+
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState === XMLHttpRequest.DONE){
+                        if( xhr.status === 200){
+                            console.log(xhr.responseText);
+                        }else{
+                            console.error('Error', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open('POST', '/update-cart/', true);
+                xhr.send(formData);
+            }
+        
+    </script>
  
 {% endblock %}
 

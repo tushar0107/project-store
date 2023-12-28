@@ -85,19 +85,19 @@ const toggleRegisterConfirmPassword = (eye)=>{
 // checkout form add quantity 
 function addQuantity(id, price){
     var quantity = document.getElementById(`product-${id}`);
-    if(parseInt(quantity.value)>0){
-        var amount = document.getElementById(`price-${id}`);
-        quantity.value = ++quantity.value;
-        amount.value = parseFloat(amount.value)+price;
-    }
+    quantity.value = ++quantity.value;
+    price = price * quantity.value;
+    var amount = document.getElementById(`tot_price-${id}`);
+    amount.value = Math.round((price + Number.EPSILON)*100)/100;
 }
 //  checkout form subtract quantity
 function subQuantity(id, price){
     var quantity = document.getElementById(`product-${id}`);
     if(parseInt(quantity.value)>1){
-        var amount = document.getElementById(`price-${id}`);
+        var amount = document.getElementById(`tot_price-${id}`);
         quantity.value = --quantity.value;
-        amount.value = parseFloat(amount.value) - price;
+        price = price * quantity.value;
+        amount.value = Math.round((price + Number.EPSILON)*100)/100;
     }
 }
 
@@ -113,4 +113,14 @@ function addToCart(id, name, price){
     cart[cart.length] = ({product_id:id, product_name:name, quantity:1, price:price});
     console.log(cart);
     localStorage.setItem('Cart', JSON.stringify(cart));
+}
+
+//create order object in javascript for the modified cart
+const createOrder = ()=>{
+    var order = [
+        {
+            product_id: '',
+            quantity: null,
+        },
+    ]
 }

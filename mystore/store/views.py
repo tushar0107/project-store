@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.middleware import csrf
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 
 # #class based view to search for products 
@@ -59,9 +62,9 @@ from django.middleware import csrf
 #         return product
     
 
-# def get_csrf_token(request):
-#     csrf_token = csrf.get_token(request)
-#     return JsonResponse({'csrfToken': csrf_token})
+def get_csrf_token(request):
+    csrf_token = csrf.get_token(request)
+    return JsonResponse({'csrfToken': csrf_token})
 
 # class CustomAuthToken(ObtainAuthToken):
 
@@ -78,58 +81,57 @@ from django.middleware import csrf
 #             'email': user.email
 #         })
 
-# class LoginView(APIView):
-#     permission_classes = [AllowAny]
+class LoginView(APIView):
+    # permission_classes = [AllowAny]
 
-#     def get(self, request, format=None):
-#         print(request.user)
-#         # user = User.objects.get(request.user)
-#         content = {'user': str(request.user),
-#                    'auth': str(request.auth),
-#                 }
-#         return Response(content)
+    def get(self, request, format=None):
+        print(request.user)
+        # user = User.objects.get(request.user)
+        content = {'user': str(request.user),
+                   'auth': str(request.auth),
+                }
+        return Response(content)
 
-#     def post(self, request):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-#         user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, password=password)
 
-#         if user is not None:
-#             login(request, user)
-#             user = User.objects.get(username=username)
-#             token, created = Token.objects.get_or_create(user=user)
-#             return Response({
-#                 'user_status': 'logged_in',
-#                 'token': token.key,
-#                 'id': user.pk,
-#                 'username': user.username,
-#                 'first_name': user.first_name,
-#                 'last_name':user.last_name,
-#                 })
-#         else:
-#             return Response({
-#                 'user_status': 'anonymous',
-#                 'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        if user is not None:
+            login(request, user)
+            user = User.objects.get(username=username)
+            # token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'user_status': 'logged_in',
+                'id': user.pk,
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name':user.last_name,
+                })
+        else:
+            return Response({
+                'user_status': 'anonymous',
+                'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         
-#     def customer_details(self, request):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
+    def customer_details(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             if Customer.objects.filter(pk=user.pk):
-#                 customer = Customer.objects.get(pk=user.pk)
-#                 return Response({
-#                     'phone': customer.phone,
-#                     'address': customer.streetaddr,
-#                     'city': customer.city,
-#                     'pincode': customer.pincode
-#                 })
-#             else:
-#                 return Response({
-#                     'message': 'You have not added more details about yourself'
-#                 })
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            if Customer.objects.filter(pk=user.pk):
+                customer = Customer.objects.get(pk=user.pk)
+                return Response({
+                    'phone': customer.phone,
+                    'address': customer.streetaddr,
+                    'city': customer.city,
+                    'pincode': customer.pincode
+                })
+            else:
+                return Response({
+                    'message': 'You have not added more details about yourself'
+                })
 
 # class RegisterUser(APIView):
 
@@ -271,8 +273,7 @@ def signup(request):
 def products(request):
     #fetch out the products from the database with the filter
     search_product = request.GET['product']
-    products_list = Product.objects.filter(name__icontains=search_product)
-    products_list = list(products_list)
+    products_list = list(Product.objects.filter(name__icontains=search_product))
     if len(products_list)!=0:
         #counts the number of products found in the database
         num_of_products = len(products_list)
@@ -292,18 +293,42 @@ def products_by_category(request):
     pass
 
 
-
-def cart(request):
-
-    return render(request, 'cart.html', {'logo': "Cart"})
+def update_cart(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        product_id = request.POST.get('product_id')
+        print(user_id, product_id)
+        product = Product.objects.get(id=product_id)
+        Cart.objects.create(user=request.user, product=product)
+        return JsonResponse({'message':'Cart Updated successfully'})
+    else:
+        return JsonResponse({'error':'Invalid request Method'})
 
 @login_required(login_url='/login/')
-def checkout(request,id):
+def cart(request):
+    cartQuery = Cart.objects.filter(user=request.user)
+    cartList = [item.product for item in cartQuery]
+    cartDict = {}       #dictionary usage is correct here
+    for i in cartList:
+        if i not in cartDict:
+            cartDict[i] = cartList.count(i)
+            i.quantity = cartDict[i]
+            i.tot_price = i.price * i.quantity
+    return render(request, 'cart.html', {'logo':'Cart','cartDict':cartDict})
+
+@login_required(login_url='/login/')
+def checkout(request,id=None):
+    print(id)
     if request.user.is_authenticated:
-        product = Product.objects.get(id=id)
-        return render(request, 'checkout.html', {'logo':'Checkout','product':product})
+        if id is not None:
+            product = Product.objects.get(id=id)
+            product.tot_price = product.price
+            return render(request, 'checkout.html', {'logo':'Checkout','product':product})
+        else:
+            return render(request, 'checkout.html', {'logo': 'Checkout'})
     else:
         return redirect(login)
+
 
 def create_order_item(request):
     product_id = request.POST.get('product_id')

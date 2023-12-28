@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
     <title>{% block title %} {% endblock %}</title>
     <script type="text/javascript" src="{% static '/js/index.js' %}"></script>
+
 </head>
 
 <body>
@@ -33,8 +34,8 @@
         <form action="/product" method="get">
             <img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search">
             <input type="text" id="header-input" onkeyup=suggestText() value="" name="product" placeholder="Search..">
-            <button type="submit"><img src="{% static '/images/next.png' %}" id="header-submit"
-                        class="icon-img" alt=""></button>
+            <button type="submit"><img src="{% static '/images/next.png' %}" id="header-submit" class="icon-img"
+                    alt=""></button>
             <img src="{% static '/images/close.png' %}" alt="" onclick=closeSearch() class="icon-img search">
         </form>
         <div id="suggestion">
@@ -67,45 +68,24 @@
 
     {% block footer %}
 
-    <div id="footer">
-        <h2>SUBSCRIBE TO OUR LATEST COLLECTIONS</h2>
-        <div id="signup-form">
-            <input type="email" placeholder="Enter your email">
-            <button type="submit">SUBMIT<img src="{% static '/images/next.png' %}" class="icon-img" alt=""></button>
-        </div>
-        <div id="footer-content">
-            <div class="logo content">LOGO</div>
-            <div class="footer-links content">
-                <ul>
-                    <li>
-                        <h3>Collections</h3>
-                    </li>
-                    <li><a href="#">Mens</a></li>
-                    <li><a href="#">Womens</a></li>
-                    <li><a href="#">Kids</a></li>
-                    <li><a href="#">Party</a></li>
-                    <li><a href="#">Winter</a></li>
-                    <li><a href="#">Summer</a></li>
-                </ul>
-            </div>
-            <div class="contact content">
-                <ul>
-                    <li>
-                        <h3>Contact</h3>
-                    </li>
-                    <li>linkedin</li>
-                    <li>Github</li>
-                    <li>Mail</li>
-                    <li><a href="tel:7304431820">+91 7304431820</a></li>
-                </ul>
-
-            </div>
-        </div>
-    </div>
 
     {% endblock %}
 
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', "/get-csrf-token/", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    localStorage.setItem('csrfToken', data.csrfToken);
+                }
+            }
+            xhr.send();
+        });
+
+    </script>
 </body>
 
 </html>

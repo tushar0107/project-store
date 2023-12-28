@@ -50,6 +50,9 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return str(f'[{self.pk}] {self.name}')
+    
+    def getBrand(self):
+        return self.brand
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -91,17 +94,17 @@ class Payment(models.Model):
         return f"Payment for Order #{self.pk} is {self.payment_status} via {self.payment_method}"
     
 class Review(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, default=1)
     text = models.TextField()
     rating = models.PositiveIntegerField()
 
     def __str__(self):
-        return str(f'{self.rating} rating by {self.customer.user.username} for {self.product.name}')
+        return str(f'{self.rating} rating by {self.user.username} for {self.product.name}')
     
-class Wishlist(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
-        return str(f"{self.customer.user.username}'s Wishlist: {self.product.name}")
+        return str(f"{self.user.first_name}'s Cart: {self.product.name}")

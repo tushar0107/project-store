@@ -19,14 +19,14 @@
                 <div class="checkout-product-card">
                     <img src="/media/{{product.image}}" alt="" class="product-img">
                     <div class="product-details">
-                        <p class="product-name">Minimalists Analog Watch - For Men 38024PP24</p>
+                        <p class="product-name">{{product.name|truncatewords_html:5}}</p>
 
                         <div class="modify-quantity">
                             <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
                             <input type="number" id="product-{{product.id}}" name="quantity" value="1" readonly>
                             <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
                         </div>
-                        <input type="number" class="product-price price" name="amount" value="{{product.price}}" id="price-{{product.id}}" step="0.01" readonly>
+                        <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" step="0.01" readonly>
                     </div>
                 </div>
                 <br>
