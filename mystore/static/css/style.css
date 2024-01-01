@@ -442,10 +442,11 @@ h2 {
   background-color: #0077ff;
   color: white;
 }
-#checkout-form .cancel-btn {
+.cancel-btn {
   background-color: #b8b8b8;
   color: black;
   margin-left: 1rem;
+  padding: 1rem 1.5rem;
 }
 #checkout-form .checkout-product-card {
   display: flex;
@@ -580,10 +581,34 @@ h2 {
   padding: 1rem 1.5rem;
   color: white;
 }
-#cancel-btn{
-  padding: 1rem 1.5rem;
-  color: black;
-  background-color: #b8b8b8;
+
+
+#confirm-modal{
+  position: absolute;
+  z-index: 100;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  display: none;
+  width: 70%;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 0 30px #5c5c5c;
+  transition: all .5s ease-in;
+}
+#modal-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0  12px;
+}
+#modal-message{
+  padding: 1rem;
+}
+#modal-cnf-btn{
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 12px;
 }
 
 /* If the browser window is 612px or smaller, */
@@ -660,6 +685,6 @@ h2 {
 }
 
 * {
-  /* border: 1px solid red; */
+  border: 1px solid red;
   box-sizing: border-box;
 }

@@ -17,6 +17,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+import json
+
 
 # #class based view to search for products 
 # # based on parameters "product name", "product desc" and "product category"
@@ -330,22 +332,24 @@ def checkout(request,id=None):
             cartDict[i] = cartList.count(i)
             i.quantity = cartDict[i]
             i.tot_price = i.price * i.quantity
-    print(cartDict)
     return render(request, 'checkout.html', {'logo':'Checkout','cartDict':cartDict})
 
 
 def create_order_item(request):
-    product_id = request.POST.get('product_id')
-    quantity = request.POST.get('quantity')
-    product = Product.objects.get(id=product_id)
-    amount = int(product.price)*int(quantity)
-    order_item = OrderItem.objects.create(
-        user=request.user, 
-        product=product,
-        quantity=quantity,
-        total_amount=amount
-    )
-    return render(request, 'confirm-order.html', {'logo':'Confirm Order','product':product, "order_item":order_item})
+    cart = request.POST.get('cart')
+    cartArr = json.loads(cart)
+    for obj in cartArr:
+        product = Product.objects.get(id=obj['id'])
+        OrderItem.objects.create(
+            user = request.user,
+            product = product,
+            quantity = obj['quantity'],
+            total_amount = product.price * int(obj['quantity']),
+            details = ''
+        )
+    messages.success(request,'Order recorded successfully. Please confirm the order and other details')
+    
+    return render(request, 'confirm-order.html', {'logo':'Confirm Order'})
 
 def confirm_order(request):
     

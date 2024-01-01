@@ -114,13 +114,3 @@ function addToCart(id, name, price){
     console.log(cart);
     localStorage.setItem('Cart', JSON.stringify(cart));
 }
-
-//create order object in javascript for the modified cart
-const createOrder = ()=>{
-    var order = [
-        {
-            product_id: '',
-            quantity: null,
-        },
-    ]
-}
