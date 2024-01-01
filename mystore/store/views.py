@@ -288,6 +288,7 @@ def products(request):
         num_of_products = '0'
         return render(request, 'product.html',{'num_of_products':num_of_products})
 
+
 def products_by_category(request):
     #fetch products from the database wy filtering through categories
     pass
@@ -304,6 +305,7 @@ def update_cart(request):
     else:
         return JsonResponse({'error':'Invalid request Method'})
 
+
 @login_required(login_url='/login/')
 def cart(request):
     cartQuery = Cart.objects.filter(user=request.user)
@@ -316,18 +318,20 @@ def cart(request):
             i.tot_price = i.price * i.quantity
     return render(request, 'cart.html', {'logo':'Cart','cartDict':cartDict})
 
+
+#for checkout the user must have to go through the cart and modify items and then confirm checkout
 @login_required(login_url='/login/')
 def checkout(request,id=None):
-    print(id)
-    if request.user.is_authenticated:
-        if id is not None:
-            product = Product.objects.get(id=id)
-            product.tot_price = product.price
-            return render(request, 'checkout.html', {'logo':'Checkout','product':product})
-        else:
-            return render(request, 'checkout.html', {'logo': 'Checkout'})
-    else:
-        return redirect(login)
+    cartQuery = Cart.objects.filter(user=request.user)
+    cartList = [item.product for item in cartQuery]
+    cartDict = {}       #dictionary usage is correct here
+    for i in cartList:
+        if i not in cartDict:
+            cartDict[i] = cartList.count(i)
+            i.quantity = cartDict[i]
+            i.tot_price = i.price * i.quantity
+    print(cartDict)
+    return render(request, 'checkout.html', {'logo':'Checkout','cartDict':cartDict})
 
 
 def create_order_item(request):

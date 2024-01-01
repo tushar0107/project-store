@@ -12,30 +12,76 @@
 
 
     <div id="checkout">
-        <div id="checkout-form">
-            <form action="/create-order-item/" method="post">
+            <!-- <form action="/create-order-item/" method="post"> -->
                 {% csrf_token %}
-                <input type="hidden" name="product_id" value="{{product.id}}">
-                <div class="checkout-product-card">
+                {% for product in cartDict %}
+                <input type="hidden" name="product_id" class="products" value="{{product.id}}">
+                <div class="cart-product">
                     <img src="/media/{{product.image}}" alt="" class="product-img">
-                    <div class="product-details">
-                        <p class="product-name">{{product.name|truncatewords_html:5}}</p>
+                    <div class="cart-details">
+                        <p class="product-name">{{product.id}}{{product.name|truncatewords_html:5}}</p>
 
-                        <div class="modify-quantity">
-                            <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
-                            <input type="number" id="product-{{product.id}}" name="quantity" value="1" readonly>
-                            <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+                        <div class="modify-action-btns">
+                            <div class="modify-quantity"> 
+                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
+                                <input type="number" id="product-{{product.id}}" class="quantity" name="quantity" value="{{product.quantity}}" readonly>
+                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+                            </div>     
+                            <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" readonly>
+                           
                         </div>
-                        <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" step="0.01" readonly>
                     </div>
                 </div>
+                {% endfor %}
                 <br>
             
-                <button type="submit" class="submit-btn form-btn">Buy</button><button type="button" class="cancel-btn form-btn" onclick="cancelBtn()">Cancel</button>
-            </form>
-        </div>
+                <div id="checkout-actions">
+                    <a href="#"><button id="cancel-btn" onclick="confirmOrder()">Cancel</button></a>
+                    <a href="#" onclick="submitCheckout"><button id="checkout-btn">Confirm Order</button></a>
+                </div>
+            <!-- </form> -->
     </div>
 
+    <script>
+        const products = document.getElementsByClassName('products');
+        const quantity = document.getElementsByClassName('quantity');
+        const confirmBtn = document.getElementById("checkout-btn");
+        var cart = [];
+        confirmBtn.addEventListener('click', function(){
+            for(let i=0; i<products.length;i++){
+                let product = {};
+                product.id = products[i].value;
+                product.quantity = quantity[i].value;
+                cart = [...cart,{...product}];
+            }
+            console.log(cart);
+        });
+
+        function submitCheckout(user,cart){
+            console.log('Submitting checkout');
+            var xhr = new XMLHttpRequest();
+            let cookie = document.cookie;
+            var csrfToken = localStorage.getItem('csrfToken');
+
+            var formData = new FormData();
+            formData.append('csrfmiddlewaretoken',csrfToken);
+            formData.append('user_id',user);
+            formData.append('cart',cart);
+            
+            xhr.onreadystatechange = function(){
+                    if (xhr.readyState === XMLHttpRequest.DONE){
+                        if( xhr.status === 200){
+                            console.log(xhr.responseText);
+                        }else{
+                            console.error('Error', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open('POST', '/create-order-item/', true);
+                xhr.send(formData);
+        }
+    </script>
     
     {% endif %}
 

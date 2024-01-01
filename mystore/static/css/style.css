@@ -556,6 +556,7 @@ h2 {
   text-align: left;
   font-size: 20px;
   border: none;
+  color: #02972f;
 }
 .cart-product input.quantity{
   text-align: right;
@@ -568,7 +569,7 @@ h2 {
   left: 0;
   right: 0;
   display: flex;
-  width: 100%;
+  width: min(967px, 96%);
   justify-content: flex-end;
   gap: 1.5rem;
   margin: 0 auto;
