@@ -2,41 +2,16 @@
 
 <body>
 {% load static %}
-{% block title %}Home{% endblock %}
+{% block title %}Checkout{% endblock %}
 
 {% block content %}
 
     {% if user.is_authenticated %}
-        <h2>checkout</h2>
-        <h2>{{id}}</h2>
-
+    <h2>Checkout</h2>
+    {{customer.streetaddr}}
+    {{total_amount}}
 
     <div id="checkout">
-            <form action="/create-order-item/" method="post" id="order-form">
-                {% csrf_token %}
-                {% for product in cartDict %}
-                <input type="hidden" name="product_id" class="products" value="{{product.id}}">
-                <div class="cart-product">
-                    <img src="/media/{{product.image}}" alt="" class="product-img">
-                    <div class="cart-details">
-                        <p class="product-name">{{product.id}} {{product.name|truncatewords_html:5}}</p>
-
-                        <div class="modify-action-btns">
-                            <div class="modify-quantity"> 
-                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
-                                <input type="number" id="product-{{product.id}}" class="quantity" name="quantity" value="{{product.quantity}}" readonly>
-                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
-                            </div>     
-                            <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" readonly>
-                           
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                <br>
-            
-            </form>
-            
                 <div id="checkout-actions">
                     <a href="#"><button class="cancel-btn" onclick=history.back()>Cancel</button></a>
                     <a href="#"><button id="checkout-btn">Confirm Order</button></a>
@@ -105,6 +80,8 @@
         }
     </script>
     
+    {% else %}
+    <h2>Please Login</h2>
     {% endif %}
 
     {% endblock %}

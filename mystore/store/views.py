@@ -292,7 +292,7 @@ def products(request):
 
 
 def products_by_category(request):
-    #fetch products from the database wy filtering through categories
+    #fetch products from the database by filtering through categories
     pass
 
 
@@ -321,20 +321,6 @@ def cart(request):
     return render(request, 'cart.html', {'logo':'Cart','cartDict':cartDict})
 
 
-#for checkout the user must have to go through the cart and modify items and then confirm checkout
-@login_required(login_url='/login/')
-def checkout(request,id=None):
-    cartQuery = Cart.objects.filter(user=request.user)
-    cartList = [item.product for item in cartQuery]
-    cartDict = {}       #dictionary usage is correct here
-    for i in cartList:
-        if i not in cartDict:
-            cartDict[i] = cartList.count(i)
-            i.quantity = cartDict[i]
-            i.tot_price = i.price * i.quantity
-    return render(request, 'checkout.html', {'logo':'Checkout','cartDict':cartDict})
-
-
 def create_order_item(request):
     cart = request.POST.get('cart')
     cartArr = json.loads(cart)
@@ -347,9 +333,21 @@ def create_order_item(request):
             total_amount = product.price * int(obj['quantity']),
             details = ''
         )
+        
+    return JsonResponse({'message':'Order created successfully'})
+
+#for checkout the user must have to go through the cart and modify items and then confirm checkout
+@login_required(login_url='/login/')
+def checkout(request,id=None):
+    user = User.objects.get(id=request.user.id)
+    customer = Customer.objects.get(user=user)
+    total_price = 0
+    orders = OrderItem.objects.filter(user=user)
+    for order in orders:
+        total_price = total_price + order.total_amount
     messages.success(request,'Order recorded successfully. Please confirm the order and other details')
-    
-    return render(request, 'confirm-order.html', {'logo':'Confirm Order'})
+    return render(request, 'checkout.html', {'logo':'Checkout','customer':customer, 'total_amount':total_price, 'orders':orders})
+
 
 def confirm_order(request):
     

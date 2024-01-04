@@ -1,40 +1,107 @@
 {% extends "base.html" %}
-{% load static %}
 
-{% block title %}Home{% endblock %}
+<body>
+{% load static %}
+{% block title %}Cart{% endblock %}
 
 {% block content %}
 
-<div id="cart-container">
-    {% for product in cartDict %}
-   
-    <div class="cart-product">
-        <img src="/media/{{product.image}}" alt="" class="product-img"/>
-        <div class="cart-details">
-            <p>{{product.name|truncatewords_html:10}}</p>
-            <div class="modify-action-btns">
-                <div class="modify-quantity"> 
-                    <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
-                    <input type="number" id="product-{{product.id}}" class="quantity" name="quantity" value="{{product.quantity}}" readonly>
-                    <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
-                </div>     
-                <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" readonly>
-            </div>
+    {% if user.is_authenticated %}
+
+
+    <div id="cart">
+            <form action="/create-order-item/" method="post" id="order-form">
+                {% csrf_token %}
+                {% for product in cartDict %}
+                <input type="hidden" name="product_id" class="products" value="{{product.id}}">
+                <div class="cart-product">
+                    <img src="/media/{{product.image}}" alt="" class="product-img">
+                    <div class="cart-details">
+                        <p class="product-name">{{product.id}} {{product.name|truncatewords_html:5}}</p>
+
+                        <div class="modify-action-btns">
+                            <div class="modify-quantity"> 
+                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
+                                <input type="number" id="product-{{product.id}}" class="quantity" name="quantity" value="{{product.quantity}}" readonly>
+                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+                            </div>     
+                            <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" readonly>
+                           
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <br>
+            
+            </form>
+            
+                <div id="checkout-actions">
+                    <a href="#"><button class="cancel-btn" onclick=history.back()>Cancel</button></a>
+                    <a href="#"><button id="checkout-btn">Confirm Order</button></a>
+                </div>
+    </div>
+
+    <div id="confirm-modal" class="">
+        <div id="modal-message">
+            <h2>Proceed to create order?</h2>
+        </div>
+        <div id="modal-cnf-btn">
+            <button id="cancel-modal" class="cancel-btn">Cancel</button>
+            <button id="checkout-btn" onclick="submitConfirmation({{user.id}})">Confirm</button>
         </div>
     </div>
-    {% endfor %}
-</div>
 
-<div id="checkout-actions">
-    <a href="#"><button class="cancel-btn" onclick=history.back()>Cancel</button></a>
-    <a href="/checkout" onclick="createOrder()"><button id="checkout-btn">Checkout</button></a>
-</div>
-{% endblock %}
+    <script>
+        const products = document.getElementsByClassName('products');
+        const quantity = document.getElementsByClassName('quantity');
+        const confirmBtn = document.getElementById("checkout-btn");
+        const cancelModal = document.getElementById("cancel-modal");
+        const modal = document.getElementById('confirm-modal');
+        const form = document.getElementById('order-form');
+        var cart = [];
+        
+        confirmBtn.addEventListener('click', function(){
+            modal.style.display = 'block';
+            for(let i=0; i<products.length;i++){
+                let product = {};
+                product.id = products[i].value;
+                product.quantity = quantity[i].value;
+                cart = [...cart,{...product}];
+            }
+            console.log(cart);
+        });
+        cancelModal.addEventListener('click', function(){
+            modal.style.display = 'none';
+            cart = [];
+        })
 
+        function submitConfirmation(user){
+            console.log('Submitting checkout', user, cart);
+            var xhr = new XMLHttpRequest();
+            let cookie = document.cookie;
+            var csrfToken = localStorage.getItem('csrfToken');
 
-<script>
-    function createOrder(){
-        var abc = document.getElementsByClassName("quantity");
-        console.log(abc);
-    }
-</script>
+            var formData = new FormData();
+            formData.append('csrfmiddlewaretoken',csrfToken);
+            formData.append('user_id',user);
+            formData.append('cart',JSON.stringify(cart));
+            
+            xhr.onreadystatechange = function(){
+                    if (xhr.readyState === XMLHttpRequest.DONE){
+                        if( xhr.status === 200){
+                            window.location.href = '/checkout';
+                        }else{
+                            console.error('Error', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open('POST', '/create-order-item/', true);
+                xhr.send(formData);
+                cart=[];
+        }
+    </script>
+    
+    {% endif %}
+
+    {% endblock %}

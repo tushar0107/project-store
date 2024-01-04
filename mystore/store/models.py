@@ -76,13 +76,14 @@ class OrderItem(models.Model):
         return str(f'Order by ,{self.user.username}')
 
 class Order(models.Model):
-    order = models.ForeignKey(OrderItem, on_delete=models.CASCADE, default="")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+    order = models.ManyToManyField(OrderItem)
     delivery_address = models.CharField(max_length=300, default='none')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     payment_mode = models.CharField(max_length=20,choices=MODES, default='')
     payment_status = models.CharField(max_length=20,choices=PAY_STATUS, default='Pending')
     def __str__(self):
-        return str(f'{self.order.quantity} x {self.order.product.name} for {self.order.user.username} ')
+        return str(f'{self.user.username} : payment {self.payment_status}')
 
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
