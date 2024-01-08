@@ -31,7 +31,7 @@
         </div>
     </div>
     <div id="search-input">
-        <form action="/product" method="get">
+        <form action="/product/" method="get">
             <img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search">
             <input type="text" id="header-input" onkeyup=suggestText() value="" name="product" placeholder="Search..">
             <button type="submit"><img src="{% static '/images/next.png' %}" id="header-submit" class="icon-img"
@@ -66,11 +66,6 @@
     {% endblock %}
 
 
-    {% block footer %}
-
-
-    {% endblock %}
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -86,6 +81,46 @@
         });
 
     </script>
+
+{% block footer %}
+
+<div id="footer">
+    <h2>SUBSCRIBE TO OUR LATEST COLLECTIONS</h2>
+    <div id="signup-form">
+        <input type="email" placeholder="Enter your email">
+        <button type="submit">SUBMIT<img src="{% static '/images/next.png' %}" class="icon-img" alt=""></button>
+    </div>
+    <div id="footer-content">
+        <div class="logo content">LOGO</div>
+        <div class="footer-links content">
+            <ul>
+                <li>
+                    <h3>Collections</h3>
+                </li>
+                <li><a href="#">Mens</a></li>
+                <li><a href="#">Womens</a></li>
+                <li><a href="#">Kids</a></li>
+                <li><a href="#">Party</a></li>
+                <li><a href="#">Winter</a></li>
+                <li><a href="#">Summer</a></li>
+            </ul>
+        </div>
+        <div class="contact content">
+            <ul>
+                <li>
+                    <h3>Contact</h3>
+                </li>
+                <li>linkedin</li>
+                <li>Github</li>
+                <li>Mail</li>
+                <li><a href="tel:7304431820">+91 7304431820</a></li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
 </body>
 
 </html>

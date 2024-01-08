@@ -9,12 +9,12 @@ from django.utils.text import slugify
 STATUS_CHOICES = (
         ('Pending', 'Pending'),
         ('Shipped', 'Shipped'),
+        ('Out for Delivery','Out for Delivery'),
         ('Delivered', 'Delivered'),
 )
 MODES = (
-    ('',''),
-    ('Cash on Delivery', 'COD'),
-    ('Debit Card','Debit Card'),
+    ('COD', 'COD'),
+    ('Debit/Credit Card','Debit/Credit Card'),
     ('UPI','UPI'),
 )
 PAY_STATUS = (
@@ -56,7 +56,8 @@ class Product(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.IntegerField()
+    phone = models.BigIntegerField()
+    plot_no = models.TextField(default='')
     streetaddr = models.TextField()
     city = models.CharField(max_length=20, choices=CITIES)
     pincode = models.PositiveIntegerField()
@@ -71,6 +72,7 @@ class OrderItem(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(max_digits=10,decimal_places=2)
     details = models.TextField(default='',blank=True)
+    status = models.BooleanField(default=False)
 
     def __str__(self):
         return str(f'Order by ,{self.user.username}')
@@ -80,8 +82,9 @@ class Order(models.Model):
     order = models.ManyToManyField(OrderItem)
     delivery_address = models.CharField(max_length=300, default='none')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_mode = models.CharField(max_length=20,choices=MODES, default='')
+    payment_mode = models.CharField(max_length=20,choices=MODES, default='1')
     payment_status = models.CharField(max_length=20,choices=PAY_STATUS, default='Pending')
+    order_status = models.CharField(max_length=20,choices=STATUS_CHOICES, default='Pending')
     def __str__(self):
         return str(f'{self.user.username} : payment {self.payment_status}')
 

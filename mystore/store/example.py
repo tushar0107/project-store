@@ -1,3 +1,5 @@
-import json
+x = 'tushar'
 
-jst = '[{id:2, q:3},]'
+lst = tuple([i for i in x])
+
+print(lst)

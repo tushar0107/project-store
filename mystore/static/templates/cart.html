@@ -21,9 +21,9 @@
 
                         <div class="modify-action-btns">
                             <div class="modify-quantity"> 
-                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
+                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity btn" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
                                 <input type="number" id="product-{{product.id}}" class="quantity" name="quantity" value="{{product.quantity}}" readonly>
-                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity btn" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
                             </div>     
                             <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" readonly>
                            
@@ -34,11 +34,12 @@
                 <br>
             
             </form>
-            
+            <div id="checkout">
                 <div id="checkout-actions">
-                    <a href="#"><button class="cancel-btn" onclick=history.back()>Cancel</button></a>
-                    <a href="#"><button id="checkout-btn">Confirm Order</button></a>
+                    <button class="cancel-btn" onclick=history.back()>Cancel</button>
+                    <button id="checkout-btn btn" class="btn">Confirm Order</button>
                 </div>
+            </div>
     </div>
 
     <div id="confirm-modal" class="">
@@ -46,8 +47,8 @@
             <h2>Proceed to create order?</h2>
         </div>
         <div id="modal-cnf-btn">
-            <button id="cancel-modal" class="cancel-btn">Cancel</button>
-            <button id="checkout-btn" onclick="submitConfirmation({{user.id}})">Confirm</button>
+            <button id="cancel-modal" class="cancel-btn btn">Cancel</button>
+            <button id="checkout-btn btn" class="btn" onclick="submitConfirmation({{user.id}})">Confirm</button>
         </div>
     </div>
 
@@ -61,7 +62,8 @@
         var cart = [];
         
         confirmBtn.addEventListener('click', function(){
-            modal.style.display = 'block';
+            modal.style.display = 'flex';
+            document.getElementById('cart').style.filter = 'blur(4px)';
             for(let i=0; i<products.length;i++){
                 let product = {};
                 product.id = products[i].value;
@@ -72,6 +74,7 @@
         });
         cancelModal.addEventListener('click', function(){
             modal.style.display = 'none';
+            document.getElementById('cart').style.filter = 'none';
             cart = [];
         })
 

@@ -212,13 +212,14 @@ class LoginView(APIView):
 # Create your views here.
 
 def index(request):
-    context = {'logo': "Store"}
-    return render(request, 'index.html', context)
+    return render(request, 'index.html', {'logo': "Store"})
 
 def profile(request):
     #to go to profile page of the user
-    context = {'logo': "user"}
-    return render(request, 'profile.html', {'logo': "STORE"})
+    customer = Customer.objects.get(user=request.user)
+    orders = Order.objects.filter(user=request.user)
+    print(orders)
+    return render(request, 'profile.html', {'logo': "STORE",'customer':customer,'orders':orders})
 
 #user login form
 def user_login(request):
@@ -242,11 +243,11 @@ def user_login(request):
 def signup(request):
     #gets form input only if the form action method is POST
     if request.method == 'POST':
-        firstname = request.POST['firstname']
-        lastname = request.POST['lastname']
-        email = request.POST['email']
-        password = request.POST['password']
-        username = request.POST['username']
+        firstname = request.POST.get('first_name')
+        lastname = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        username = request.POST.get('username')
 
         #checks if email is already registered or not,
         #if already registred email found, it sends a message and redirects to login
@@ -264,7 +265,8 @@ def signup(request):
             user = User.objects.create_user(
                 username=username,
                 password=password,
-                
+                first_name=firstname,
+                last_name=lastname
             )
             user.save()
             # user = auth.authenticate(request,username=username,password=password)    #to save the new user object
@@ -279,7 +281,7 @@ def products(request):
     if len(products_list)!=0:
         #counts the number of products found in the database
         num_of_products = len(products_list)
-        return render(request,'product.html',{
+        return render(request,'products.html',{
             'products':products_list,
             'num_of_products':num_of_products,
             'search':search_product,
@@ -288,8 +290,13 @@ def products(request):
     else:
         #returns nothing if no products found with the relevant name
         num_of_products = '0'
-        return render(request, 'product.html',{'num_of_products':num_of_products})
+        return render(request, 'products.html',{'num_of_products':num_of_products,'search':search_product,})
 
+def product(request, id):
+    product = Product.objects.get(id=id)
+    print(product)
+
+    return render(request, 'product.html',{'logo':'STORE','product':product})
 
 def products_by_category(request):
     #fetch products from the database by filtering through categories
@@ -298,12 +305,10 @@ def products_by_category(request):
 
 def update_cart(request):
     if request.method == 'POST':
-        user_id = request.POST.get('user_id')
         product_id = request.POST.get('product_id')
-        print(user_id, product_id)
         product = Product.objects.get(id=product_id)
         Cart.objects.create(user=request.user, product=product)
-        return JsonResponse({'message':'Cart Updated successfully'})
+        return JsonResponse({'message':'Product has been added to Cart successfully'})
     else:
         return JsonResponse({'error':'Invalid request Method'})
 
@@ -342,22 +347,40 @@ def checkout(request,id=None):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
     total_price = 0
-    orders = OrderItem.objects.filter(user=user)
-    for order in orders:
+    order_items = OrderItem.objects.filter(user=user)
+
+    for order in order_items:
         total_price = total_price + order.total_amount
     messages.success(request,'Order recorded successfully. Please confirm the order and other details')
-    return render(request, 'checkout.html', {'logo':'Checkout','customer':customer, 'total_amount':total_price, 'orders':orders})
+    return render(request, 'checkout.html', {'logo':'Checkout','customer':customer, 'total_amount':total_price})
 
 
 def confirm_order(request):
-    
-    pass
+    user = User.objects.get(id=request.user.id)
+    orders = OrderItem.objects.filter(user=user,status=False)
+    total_price = request.POST.get('total_price')
+    plot_no = request.POST.get('plot-no')
+    strt_addr = request.POST.get('strt-address')
+    payment_mode = request.POST.get('payment_mode')
+    print(user, orders,total_price, plot_no, strt_addr, payment_mode)
+    print([order.id for order in orders])
+    ord = Order.objects.create(
+        user=user,
+        delivery_address=plot_no+', '+strt_addr,
+        total_price=total_price,
+        payment_mode=payment_mode
+    )
+    ord.save()
+    for order in orders:
+        ord.order.add(order.id)
+    return redirect(profile)
 
 def user_logout(request):
     #to logout the user
-    logout(request)
-    messages.info(request,"Logged Out.")
-    return redirect(index)
+    if request.user.is_authenticated:
+        logout(request)
+        messages.info(request,"Logged Out.")
+        return redirect(index)
 
 def delete_account(request):
     #to delete the user account
