@@ -15,11 +15,11 @@
     <form action="/confirm-order/" method="post" id="checkout-confirm-form">
         {% csrf_token %}
         <h4>Enter Delivery address</h4>
-        <input type="text" name="plot-no" id="plot-no" value="340">
-        <input type="text" name="strt-address" id="strt-address" value="{{customer.streetaddr}}">
+        <input type="text" name="plot-no" id="plot-no" value="" placeholder="Plot No.">
+        <input type="text" name="strt-address" id="strt-address" value="" placeholder="Street Address">
         <h3>Total Order Amount:</h3>
         <input type="text" name="total_price" value="{{total_amount}}" readonly>
-        <sub>* If you want to complete Payment, please select "COD" or "UPI". <br>You can later complete the Payment from the order history in your profile section. </sub>
+        <sub>* If you want to complete Payment, please select "Debit/Credit" or "UPI". <br>You can later complete the Payment from the order history in your profile section. </sub>
         <select name="payment_mode" id="payment_mode">
             <option value="">Select Payment Mode</option>
             <option value="1">Cash on Delivery</option>

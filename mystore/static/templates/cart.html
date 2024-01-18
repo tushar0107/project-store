@@ -37,7 +37,7 @@
             <div id="checkout">
                 <div id="checkout-actions">
                     <button class="cancel-btn" onclick=history.back()>Cancel</button>
-                    <button id="checkout-btn btn" class="btn">Confirm Order</button>
+                    <button id="checkout-btn" class="btn">Confirm Order</button>
                 </div>
             </div>
     </div>
@@ -48,20 +48,20 @@
         </div>
         <div id="modal-cnf-btn">
             <button id="cancel-modal" class="cancel-btn btn">Cancel</button>
-            <button id="checkout-btn btn" class="btn" onclick="submitConfirmation({{user.id}})">Confirm</button>
+            <button id="confirm-btn" class="btn" onclick="submitConfirmation({{user.id}})">Confirm</button>
         </div>
     </div>
 
     <script>
         const products = document.getElementsByClassName('products');
         const quantity = document.getElementsByClassName('quantity');
-        const confirmBtn = document.getElementById("checkout-btn");
+        const checkoutBtn = document.getElementById("checkout-btn");
         const cancelModal = document.getElementById("cancel-modal");
         const modal = document.getElementById('confirm-modal');
         const form = document.getElementById('order-form');
         var cart = [];
         
-        confirmBtn.addEventListener('click', function(){
+        checkoutBtn.addEventListener('click', function(){
             modal.style.display = 'flex';
             document.getElementById('cart').style.filter = 'blur(4px)';
             for(let i=0; i<products.length;i++){

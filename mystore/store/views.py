@@ -15,53 +15,54 @@ from django.middleware import csrf
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets,status
+from store.serializer import *
 
 import json
 
 
-# #class based view to search for products 
-# # based on parameters "product name", "product desc" and "product category"
-# class ProductList(viewsets.ModelViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
+#class based view to search for products 
+# based on parameters "product name", "product desc" and "product category"
+class ProductList(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
     
-#     def get_queryset(self):
-#         search_product = self.request.query_params.get('search')
-#         order = self.request.query_params.get('order')
-#         category = self.request.query_params.get('category')
-#         queryset1 = Product.objects.filter(name__icontains=search_product)
-#         queryset2 = Product.objects.filter(desc__icontains=search_product)
-#         #searches for products only if order and category parameter is passed
-#         if order is not None:
-#             #if "order" parameter has some value ('price' or 'desc') this searches within category
-#             #and returns the union of both query sets
-#             if category is not None:
-#                 queryset3 = Product.objects.filter(category=category)
-#                 return queryset1.union(queryset2).union(queryset3).order_by(order)
-#             return queryset1.union(queryset2).order_by(order)
+    def get_queryset(self):
+        search_product = self.request.query_params.get('search')
+        order = self.request.query_params.get('order')
+        category = self.request.query_params.get('category')
+        queryset1 = Product.objects.filter(name__icontains=search_product)
+        queryset2 = Product.objects.filter(desc__icontains=search_product)
+        #searches for products only if order and category parameter is passed
+        if order is not None:
+            #if "order" parameter has some value ('price' or 'desc') this searches within category
+            #and returns the union of both query sets
+            if category is not None:
+                queryset3 = Product.objects.filter(category=category)
+                return queryset1.union(queryset2).union(queryset3).order_by(order)
+            return queryset1.union(queryset2).order_by(order)
         
-#         #if 'order' parameter is not passed but 'category is passed
-#         elif category is not None:
-#             queryset3 = Product.objects.filter(category=category)
-#             return queryset1.union(queryset3).order_by("price")
+        #if 'order' parameter is not passed but 'category is passed
+        elif category is not None:
+            queryset3 = Product.objects.filter(category=category)
+            return queryset1.union(queryset3).order_by("price")
         
-#         #to search products with only categories or if 'search parameter is not passed
-#         elif search_product is None:
-#             return queryset3
+        #to search products with only categories or if 'search parameter is not passed
+        elif search_product is None:
+            return queryset3
         
-#         #if 'category' parameter is not passed
-#         else:
-#             return queryset1.union(queryset2)
+        #if 'category' parameter is not passed
+        else:
+            return queryset1.union(queryset2)
 
-# #class based view to get product by "id"
-# class ProductView(viewsets.ModelViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#     def get(self):
-#         pk = self.request.query_params.get('pk')
-#         product = Product.objects.get(id=pk)
-#         return product
+#class based view to get product by "id"
+class ProductView(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    def get(self):
+        pk = self.request.query_params.get('pk')
+        product = Product.objects.get(id=pk)
+        return product
     
 
 def get_csrf_token(request):
@@ -216,11 +217,14 @@ def index(request):
 
 def profile(request):
     #to go to profile page of the user
-    customer = Customer.objects.get(user=request.user)
-    orders = Order.objects.filter(user=request.user)
-    print(orders)
-    return render(request, 'profile.html', {'logo': "STORE",'customer':customer,'orders':orders})
-
+    print(request.user.id)
+    if(request.user.id is not None):
+        customer = Customer.objects.get(user=request.user)
+        orders = Order.objects.filter(user=request.user)
+        return render(request, 'profile.html', {'logo': "Profile",'customer':customer,'orders':orders})
+    else:
+        return render(request, 'profile.html', {'logo': "Profile",})
+    
 #user login form
 def user_login(request):
     #gets form input only if the form action method is POST
@@ -329,15 +333,16 @@ def cart(request):
 def create_order_item(request):
     cart = request.POST.get('cart')
     cartArr = json.loads(cart)
-    for obj in cartArr:
-        product = Product.objects.get(id=obj['id'])
-        OrderItem.objects.create(
-            user = request.user,
-            product = product,
-            quantity = obj['quantity'],
-            total_amount = product.price * int(obj['quantity']),
-            details = ''
-        )
+    print(cartArr)
+    # for obj in cartArr:
+    #     product = Product.objects.get(id=obj['id'])
+    #     OrderItem.objects.create(
+    #         user = request.user,
+    #         product = product,
+    #         quantity = obj['quantity'],
+    #         total_amount = product.price * int(obj['quantity']),
+    #         details = ''
+    #     )
         
     return JsonResponse({'message':'Order created successfully'})
 

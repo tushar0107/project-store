@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') or True
 
-ALLOWED_HOSTS = ['my-store-49td.onrender.com', '127.0.0.1', '192.168.54.174']
+ALLOWED_HOSTS = ['my-store-49td.onrender.com', '127.0.0.1', '192.168.54.174', '192.168.1.15']
 
 # Application definition
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -139,4 +140,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:8000',
     'https://my-store-49td.onrender.com',
+    'http://192.186.1.15:8000'
 ]
