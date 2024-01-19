@@ -15,7 +15,7 @@ from django.middleware import csrf
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import viewsets,status
+from rest_framework import viewsets,status, generics, permissions
 from store.serializer import *
 
 import json
@@ -23,11 +23,11 @@ import json
 
 #class based view to search for products 
 # based on parameters "product name", "product desc" and "product category"
-class ProductList(viewsets.ModelViewSet):
+class ProductListView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     
-    def get_queryset(self):
+    def get(self):
         search_product = self.request.query_params.get('search')
         order = self.request.query_params.get('order')
         category = self.request.query_params.get('category')
@@ -56,13 +56,11 @@ class ProductList(viewsets.ModelViewSet):
             return queryset1.union(queryset2)
 
 #class based view to get product by "id"
-class ProductView(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    def get(self):
-        pk = self.request.query_params.get('pk')
+class ProductView(generics.CreateAPIView):
+    def get(self, request, pk):
         product = Product.objects.get(id=pk)
-        return product
+        serializer = ProductSerializer(product, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
 def get_csrf_token(request):

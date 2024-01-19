@@ -19,6 +19,9 @@ urlpatterns = [
     path('register/',views.signup, name='user registration'),
     path('create-order-item/',views.create_order_item,name="add item to order item"),
     path('confirm-order/', views.confirm_order, name="create order for user"),
-    path('get-csrf-token/', views.get_csrf_token, name='token')
+    path('get-csrf-token/', views.get_csrf_token, name='token'),
+    path('api/product/<int:pk>/', views.ProductView.as_view(), name='to get product by id'),
+    path('api/products/', views.ProductListView.as_view({'get':'list'}),name='to get product list'),
+    path('api/login/',views.LoginView.as_view(), name='to login for a user'),
 
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
