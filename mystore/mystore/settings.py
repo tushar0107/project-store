@@ -142,3 +142,11 @@ CORS_ORIGIN_WHITELIST = [
     'https://my-store-49td.onrender.com',
     'http://192.186.1.15:8000'
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}

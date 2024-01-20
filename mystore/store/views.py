@@ -15,7 +15,9 @@ from django.middleware import csrf
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import viewsets,status, generics, permissions
+from rest_framework import viewsets,status, generics
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from store.serializer import *
 
 import json
@@ -83,130 +85,132 @@ def get_csrf_token(request):
 #         })
 
 class LoginView(APIView):
-    # permission_classes = [AllowAny]
+    
+    # user login view
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-    def get(self, request, format=None):
-        print(request.user)
-        # user = User.objects.get(request.user)
-        content = {'user': str(request.user),
-                   'auth': str(request.auth),
-                }
-        return Response(content)
+        user = authenticate(request, username=username, password=password)
+        # if user has logged in with valid credentials
+        if user is not None:
+            login(request, user)
+            user = User.objects.get(username=username)
+            userdata = {'id': user.id,'username': user.username,'first_name': user.first_name, 'last_name':user.last_name,'email':user.email}
+            return Response({
+                'message': 'Logged In Successfully',
+                'data': userdata,
+                })
+        else:
+            return Response({
+                'message': 'Invalid credentials',
+                }, status=status.HTTP_401_UNAUTHORIZED)
+        
+    def get(self, request, id=None):
+        if request.user.is_authenticated and request.user.id==id:
+            if Customer.objects.filter(user=request.user).exists():
+                customer = Customer.objects.get(user=request.user)
+                customer = CustomerSerializer(customer, many=False)
+                return Response({
+                    'data': customer.data,
+                })
+            else:
+                return Response({
+                    'message': 'User details not provided',
+                    'status': False,
+                })
+        else:
+            return Response({
+                'message': 'Please Login.'
+            })
+
+class RegisterUser(APIView):
 
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
 
         user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            user = User.objects.get(username=username)
-            # token, created = Token.objects.get_or_create(user=user)
+        if User.objects.filter(username=username).exists():
             return Response({
-                'user_status': 'logged_in',
-                'id': user.pk,
-                'username': user.username,
-                'first_name': user.first_name,
-                'last_name':user.last_name,
+                'message': 'Mobile number exists.\n Please Try with a different Mobile number.'
+            })
+        else:
+            user = User.objects.create_user(
+                username = username,
+                password = password,
+            )
+            user.save()
+            login(request, user)
+            
+            userdata = {'username': user.username,'first_name': user.first_name, 'last_name':user.last_name,'email':user.email}
+            return Response({
+                'message': 'User Registered',
+                'data':{
+                    'user': str(userdata),
+                }
+            })
+
+class CustomerCreate(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        first_name = request.data.get('first_name')
+        last_name = request.data.get('last_name')
+        email = request.data.get('email')
+        phone = request.data.get('mobile')
+        plot_no = request.data.get('plot_no')
+        streetaddr = request.data.get('address')
+        pincode = request.data.get('pincode')
+        city = request.data.get('city')
+
+        user = authenticate(request, username=username, password=password)
+        if request.user.is_authenticated:
+            if Customer.objects.filter(user=request.user).exists():
+                return Response({
+                    'message': 'You have already registered as a customer. Please login.'
+                })
+
+            elif User.objects.filter(email=email).exists():
+                return Response({
+                    'message': 'This emailId is already registered.'
+                })
+            else:
+                user = User.objects.get(username=username)
+                user.email = email
+                user.first_name = first_name
+                user.last_name = last_name
+                user.save()
+                customer = Customer.objects.create(
+                    user= user,
+                    phone = username,
+                    plot_no = plot_no,
+                    streetaddr = streetaddr,
+                    city = city,
+                    pincode = pincode,
+                )
+                customer.save()
+                userdata = {'username': user.username,'first_name': user.first_name, 'last_name':user.last_name,'email':user.email}
+                customer = CustomerSerializer(customer, many=False)
+                return Response({
+                    'message': 'User Registered',
+                    'data': {
+                        'user': str(userdata),
+                        'customer': str(customer.data)
+                    }
                 })
         else:
             return Response({
-                'user_status': 'anonymous',
-                'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        
-    def customer_details(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+                'message': 'Please Login',
+            })
 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            if Customer.objects.filter(pk=user.pk):
-                customer = Customer.objects.get(pk=user.pk)
-                return Response({
-                    'phone': customer.phone,
-                    'address': customer.streetaddr,
-                    'city': customer.city,
-                    'pincode': customer.pincode
-                })
-            else:
-                return Response({
-                    'message': 'You have not added more details about yourself'
-                })
+class CartView(APIView):
+    permission_classes = [IsAuthenticated]
 
-# class RegisterUser(APIView):
-
-#     def post(self, request):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
-
-#         user = authenticate(request, username=username, password=password)
-#         if User.objects.filter(username=username).exists():
-#             return Response({
-#                 'message': 'Please Try with a different Username.'
-#             })
-#         else:
-#             user = User.objects.create_user(
-#                 username = username,
-#                 password = password,
-#             )
-#             user.save()
-#             login(request, user)
-#             token = Token.objects.create(user=user)
-#             return Response({
-#                 'message': 'User Registered',
-#                 'id': user.pk,
-#                 'token': token.key,
-#                 'username': user.username,
-#             })
-    
-#     def create_customer(self, request):
-#         username = request.data.get('username')
-#         password = request.data.get('password')
-#         first_name = request.data.get('first_name')
-#         last_name = request.data.get('last_name')
-#         email = request.data.get('email')
-#         mobile = request.data.get('mobile')
-#         streetaddr = request.data.get('address')
-#         pincode = request.data.get('pincode')
-#         city = request.data.get('city')
-
-#         user = authenticate(request, username=username, password=password)
-#         if Customer.objects.filter(phone=mobile).exists():
-#                 return Response({
-#                     'message': 'This mobile number is already registered'
-#                 })
-#         elif User.objects.filter(email=email).exists():
-#             return Response({
-#                 'message': 'Please try with a different email-id.'
-#             })
-#         else:
-#             user = User.objects.get(username=username)
-#             user.email = email
-#             user.first_name = first_name
-#             user.last_name = last_name
-#             user.save()
-#             customer = Customer.objects.create(
-#                 pk = user.pk,
-#                 streetaddr = streetaddr,
-#                 phone = mobile,
-#                 city = city,
-#                 pincode = pincode,
-#             )
-#             login(request, user)
-#             return Response({
-#                 'message': 'User Registered',
-#                 'id': user.pk,
-#                 'username': user.username,
-#                 'first_name': customer.first_name,
-#                 'last_name': customer.last_name,
-#                 'email': user.email,
-#                 'mobile': customer.phone,
-#                 'streetaddr': customer.streetaddr,
-#                 'city': customer.city,
-#                 'pincode': customer.pincode
-#             })
-
+    def post(self, request, id):
+        pass
 
 # Create your views here.
 
