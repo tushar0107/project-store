@@ -21,9 +21,9 @@
 
                         <div class="modify-action-btns">
                             <div class="modify-quantity"> 
-                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity btn" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
+                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity btn btn-blue" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
                                 <input type="number" id="product-{{product.id}}" class="quantity" name="quantity" value="{{product.quantity}}" readonly>
-                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity btn" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity btn btn-blue" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
                             </div>     
                             <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" readonly>
                            
@@ -37,7 +37,7 @@
             <div id="checkout">
                 <div id="checkout-actions">
                     <button class="cancel-btn" onclick=history.back()>Cancel</button>
-                    <button id="checkout-btn" class="btn">Confirm Order</button>
+                    <button id="checkout-btn" class="btn btn-blue">Confirm Order</button>
                 </div>
             </div>
     </div>
@@ -48,7 +48,7 @@
         </div>
         <div id="modal-cnf-btn">
             <button id="cancel-modal" class="cancel-btn btn">Cancel</button>
-            <button id="confirm-btn" class="btn" onclick="submitConfirmation({{user.id}})">Confirm</button>
+            <button id="confirm-btn" class="btn btn-blue" onclick="submitConfirmation({{user.id}})">Confirm</button>
         </div>
     </div>
 

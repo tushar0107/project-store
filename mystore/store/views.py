@@ -92,6 +92,7 @@ class LoginView(APIView):
         password = request.data.get('password')
 
         user = authenticate(request, username=username, password=password)
+        print(user)
         # if user has logged in with valid credentials
         if user is not None:
             login(request, user)
@@ -104,7 +105,7 @@ class LoginView(APIView):
         else:
             return Response({
                 'message': 'Invalid credentials',
-                }, status=status.HTTP_401_UNAUTHORIZED)
+                })
         
     def get(self, request, id=None):
         if request.user.is_authenticated and request.user.id==id:
@@ -129,8 +130,10 @@ class RegisterUser(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-
-        user = authenticate(request, username=username, password=password)
+        first_name = request.data.get('first_name')
+        last_name = request.data.get('last_name')
+        
+        # user = authenticate(request, username=username, password=password)
         if User.objects.filter(username=username).exists():
             return Response({
                 'message': 'Mobile number exists.\n Please Try with a different Mobile number.'
@@ -139,13 +142,15 @@ class RegisterUser(APIView):
             user = User.objects.create_user(
                 username = username,
                 password = password,
+                first_name = first_name,
+                last_name = last_name
             )
             user.save()
             login(request, user)
             
             userdata = {'username': user.username,'first_name': user.first_name, 'last_name':user.last_name,'email':user.email}
             return Response({
-                'message': 'User Registered',
+                'message': 'User Registered Successfully',
                 'data':{
                     'user': str(userdata),
                 }

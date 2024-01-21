@@ -21,7 +21,7 @@ button.cancel-btn {
   outline: none;
   cursor: pointer;
 }
-button.btn:hover{
+button.btn.btn-blue:hover{
   background-color: #1a83fc;
 }
 a {
