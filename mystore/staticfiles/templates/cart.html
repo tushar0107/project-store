@@ -1,15 +1,110 @@
 {% extends "base.html" %}
-{% load static %}
 
-{% block title %}Home{% endblock %}
+<body>
+{% load static %}
+{% block title %}Cart{% endblock %}
 
 {% block content %}
 
-<div id="cart-container">
-    <div class="cart-product">
-        product1
+    {% if user.is_authenticated %}
+
+
+    <div id="cart">
+            <form action="/create-order-item/" method="post" id="order-form">
+                {% csrf_token %}
+                {% for product in cartDict %}
+                <input type="hidden" name="product_id" class="products" value="{{product.id}}">
+                <div class="cart-product">
+                    <img src="/media/{{product.image}}" alt="" class="product-img">
+                    <div class="cart-details">
+                        <p class="product-name">{{product.id}} {{product.name|truncatewords_html:5}}</p>
+
+                        <div class="modify-action-btns">
+                            <div class="modify-quantity"> 
+                                <button type="button" id="sub-{{product.id}}" class="quantity-btn add-quantity btn btn-blue" onclick="subQuantity({{product.id}},{{product.price}})">-</button>
+                                <input type="number" id="product-{{product.id}}" class="quantity" name="quantity" value="{{product.quantity}}" readonly>
+                                <button type="button" id="add-{{product.id}}" class="quantity-btn sub-quantity btn btn-blue" onclick="addQuantity({{product.id}},{{product.price}})">+</button>
+                            </div>     
+                            <input type="number" class="product-price price" name="amount" value="{{product.tot_price}}" id="tot_price-{{product.id}}" readonly>
+                           
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <br>
+            
+            </form>
+            <div id="checkout">
+                <div id="checkout-actions">
+                    <button class="cancel-btn" onclick=history.back()>Cancel</button>
+                    <button id="checkout-btn" class="btn btn-blue">Confirm Order</button>
+                </div>
+            </div>
     </div>
-</div>
 
+    <div id="confirm-modal" class="">
+        <div id="modal-message">
+            <h2>Proceed to create order?</h2>
+        </div>
+        <div id="modal-cnf-btn">
+            <button id="cancel-modal" class="cancel-btn btn">Cancel</button>
+            <button id="confirm-btn" class="btn btn-blue" onclick="submitConfirmation({{user.id}})">Confirm</button>
+        </div>
+    </div>
 
-{% endblock %}
+    <script>
+        const products = document.getElementsByClassName('products');
+        const quantity = document.getElementsByClassName('quantity');
+        const checkoutBtn = document.getElementById("checkout-btn");
+        const cancelModal = document.getElementById("cancel-modal");
+        const modal = document.getElementById('confirm-modal');
+        const form = document.getElementById('order-form');
+        var cart = [];
+        
+        checkoutBtn.addEventListener('click', function(){
+            modal.style.display = 'flex';
+            document.getElementById('cart').style.filter = 'blur(4px)';
+            for(let i=0; i<products.length;i++){
+                let product = {};
+                product.id = products[i].value;
+                product.quantity = quantity[i].value;
+                cart = [...cart,{...product}];
+            }
+            console.log(cart);
+        });
+        cancelModal.addEventListener('click', function(){
+            modal.style.display = 'none';
+            document.getElementById('cart').style.filter = 'none';
+            cart = [];
+        })
+
+        function submitConfirmation(user){
+            console.log('Submitting checkout', user, cart);
+            var xhr = new XMLHttpRequest();
+            let cookie = document.cookie;
+            var csrfToken = localStorage.getItem('csrfToken');
+
+            var formData = new FormData();
+            formData.append('csrfmiddlewaretoken',csrfToken);
+            formData.append('user_id',user);
+            formData.append('cart',JSON.stringify(cart));
+            
+            xhr.onreadystatechange = function(){
+                    if (xhr.readyState === XMLHttpRequest.DONE){
+                        if( xhr.status === 200){
+                            window.location.href = '/checkout';
+                        }else{
+                            console.error('Error', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open('POST', '/create-order-item/', true);
+                xhr.send(formData);
+                cart=[];
+        }
+    </script>
+    
+    {% endif %}
+
+    {% endblock %}

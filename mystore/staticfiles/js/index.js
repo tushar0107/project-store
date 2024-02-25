@@ -85,18 +85,46 @@ const toggleRegisterConfirmPassword = (eye)=>{
 // checkout form add quantity 
 function addQuantity(id, price){
     var quantity = document.getElementById(`product-${id}`);
-    if(parseInt(quantity.value)>0){
-        var amount = document.getElementById(`price-${id}`);
-        quantity.value = ++quantity.value;
-        amount.value = parseFloat(amount.value)+price;
-    }
+    quantity.value = ++quantity.value;
+    price = price * quantity.value;
+    var amount = document.getElementById(`tot_price-${id}`);
+    amount.value = Math.round((price + Number.EPSILON)*100)/100;
 }
 //  checkout form subtract quantity
 function subQuantity(id, price){
     var quantity = document.getElementById(`product-${id}`);
     if(parseInt(quantity.value)>1){
-        var amount = document.getElementById(`price-${id}`);
+        var amount = document.getElementById(`tot_price-${id}`);
         quantity.value = --quantity.value;
-        amount.value = parseFloat(amount.value) - price;
+        price = price * quantity.value;
+        amount.value = Math.round((price + Number.EPSILON)*100)/100;
     }
+}
+
+//Add to cart button
+function addToCart(id, name, price){
+    var cart = [];
+    if(localStorage.getItem('Cart')==null){
+        localStorage.setItem('Cart',JSON.stringify(cart));
+    }else{
+        var local = localStorage.getItem('Cart');
+        cart = JSON.parse(local);
+    }
+    cart[cart.length] = ({product_id:id, product_name:name, quantity:1, price:price});
+    console.log(cart);
+    localStorage.setItem('Cart', JSON.stringify(cart));
+}
+
+
+// show product description
+function showDesc(){
+    document.getElementById('descShowBtn').style.display = 'none';
+    document.getElementById('descHideBtn').style.display = 'block';
+    const descPara = document.getElementById('description').style.height = '100%';
+}
+// Hide product description
+function hideDesc(){
+    document.getElementById('descShowBtn').style.display = 'inline';
+    document.getElementById('descHideBtn').style.display = 'none';
+    const descPara = document.getElementById('description').style.height = '8rem';
 }
