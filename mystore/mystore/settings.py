@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'store',
     'corsheaders',
     'rest_framework',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [

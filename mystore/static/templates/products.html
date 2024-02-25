@@ -14,12 +14,12 @@
         <div class="product-card">
             <img src="/media/{{product.image}}" alt="" class="product-img">
             <div class="product-details">
-                <strong class="product-name">{{product.name|truncatewords_html:5}}</strong>
-                <p class="product-desc">{{product.desc|truncatewords_html:15}}</p>
+                <strong class="product-name">{{product.name|truncatewords_html:25}}</strong>
+                <!-- <p class="product-desc">{{product.desc|truncatewords_html:15}}</p> -->
                 <p class="product-price">{{product.price}}/-</p>
                 <div class="prod-btns">
-                    <button class="view-btn btn" onclick="gotoProduct('{{product.id}}')"><img src="{% static '/images/view.png' %}" alt="" class="icon-img"/></button>
-                    <button class="btn btn-blue" onclick="submitCart('{{user.id}}','{{product.id}}')"><img src="{% static '/images/addcart.png' %}" alt="" class="icon-img"/></button>
+                    <button class="view-btn btn" onclick="gotoProduct('{{product.id}}')"><i class="fa-regular fa-eye"></i></button>
+                    <button class="cart-btn-outline" onclick="submitCart('{{user.id}}','{{product.id}}')"><i class="fa-solid fa-cart-plus"></i></button>
                 </div>
             </div>
         </div>

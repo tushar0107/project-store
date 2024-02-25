@@ -10,6 +10,7 @@ button.btn {
   border: none;
   outline: none;
   cursor: pointer;
+  font-size: 1rem;
 }
 button.cancel-btn {
   background-color: #b8b8b8;
@@ -252,7 +253,7 @@ h2 {
   background-color: #1b1b1b;
   color: white;
   padding: 3rem;
-  margin: 6rem auto 0;
+  margin: 4rem auto 0;
 }
 #signup-form {
   display: flex;
@@ -311,9 +312,9 @@ h2 {
 }
 #product-container {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: repeat(auto-fill,minmax(380px,1fr));
   padding: 1rem;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-top: 1rem;
 }
 .not-found{
@@ -324,15 +325,17 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: calc(100% - 1rem);
+  width: 100%;
   border-radius: 10px;
   overflow: hidden;
   padding: 0.5rem;
-  box-shadow: 0 0 8px #b8b8b8;
+  /* box-shadow: 0 0 8px #b8b8b8; */
+  border: 1px solid grey;
 }
 .product-card img.product-img {
   display: block;
-  width: 100%;
+  width: 75%;
+  margin: 0 auto;
   aspect-ratio: 1/1;
   object-fit: contain;
   border-radius: 4px;
@@ -367,36 +370,58 @@ p.product-price {
   gap: 0.5rem;
 }
 .prod-btns button {
-  display: block;
-  height: 100%;
-  width: 25%;
-  padding: 0;
-  color: white;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-}
-.prod-btns .view-btn{
-  width: 75%;
-  background-color: #d3d3d3;
+  width: 100%;
 }
 
-/* product page styles */
-#product-container{ 
+
+/* product view page styles */
+
+main#view-product{
+  padding: 1rem;
+}
+#view-product #product-view-container {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-div#product-desc {
-  padding: 0 1rem;
-}
-div#product-image  img{
+#view-product #product-image  img{
   width: 100%;
 }
-.product-btn.btn {
-  width: 100%;
-  padding: 0.5rem;
+#view-product #product-image {
+  margin: 0 auto;
+  max-width: 400px;
+  flex: 1 1 300px;
 }
-
+#view-product #product-desc {
+  margin: 0 auto;
+  flex: 1 1 546px;
+}
+#product-desc p{
+  height: 8rem;
+  overflow: hidden;
+}
+#view-product #action-btns {
+  background-color: white;
+  position: sticky;
+  z-index: 1;
+  bottom: 0;
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.cart-btn-outline {
+  background-color: transparent;
+  border: 2px solid #0077ff;
+  border-radius: 10px;
+  color: #0077ff;
+  width: 4rem;
+}
+#descHideBtn{
+  display: none;
+}
 /* profilepage styles */
 #profile-container {
   width: min(100%,700px);
@@ -406,6 +431,7 @@ div#product-image  img{
   justify-content: space-between;
   align-items: flex-start;
   padding: 1rem;
+  gap: 1rem;
 }
 div#profile-head {
   width: 30%;
@@ -586,12 +612,10 @@ form#order-form {
   text-align: right;
 }
 #checkout{
-  position: fixed;
-  z-index: 100;
+  position: sticky;
+  z-index: 1;
   bottom: 0;
-  left: 0;
-  right: 0;
-  width: min(100%,700px);
+  width: min(100%,967px);
   background-color: white;
 }
 
@@ -713,7 +737,7 @@ form#checkout-confirm-form{
     width: calc(100% - 1rem);
     flex-direction: column;
     justify-content: space-between;
-}
+  }
 
   /*  */
   .cart-product{

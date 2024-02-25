@@ -5,10 +5,11 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <link rel="shortcut icon" href="{% static '/images/favicon.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
-    <title>{% block title %} {% endblock %}</title>
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{% static '/js/index.js' %}"></script>
 
 </head>
@@ -19,7 +20,7 @@
 
     <!-- header -->
     <div id="header">
-        <div class="logo">{{logo}}</div>
+        <a href="/" class="logo">{{logo}}</a>
         <div id="mob-nav">
             <ul>
                 <li><img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search">

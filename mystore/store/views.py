@@ -226,11 +226,11 @@ def profile(request):
     #to go to profile page of the user
     print(request.user.id)
     if(request.user.id is not None):
-        customer = Customer.objects.get(user=request.user)
+        customer = Customer.objects.get(user=request.user) if Customer.objects.filter(user=request.user).exists() else None
         orders = Order.objects.filter(user=request.user)
         return render(request, 'profile.html', {'logo': "Profile",'customer':customer,'orders':orders})
     else:
-        return render(request, 'profile.html', {'logo': "Profile",})
+        return render(request, 'profile.html')
     
 #user login form
 def user_login(request):
@@ -304,10 +304,12 @@ def products(request):
         return render(request, 'products.html',{'num_of_products':num_of_products,'search':search_product,})
 
 def product(request, id):
-    product = Product.objects.get(id=id)
-    print(product)
+    if Product.objects.filter(id=id).exists():
+        product = Product.objects.get(id=id)
+        return render(request, 'product.html',{'logo':'STORE','product':product})
+    else:
+        return render(request, '404page.html')
 
-    return render(request, 'product.html',{'logo':'STORE','product':product})
 
 def products_by_category(request):
     #fetch products from the database by filtering through categories

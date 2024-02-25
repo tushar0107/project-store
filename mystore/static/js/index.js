@@ -114,3 +114,17 @@ function addToCart(id, name, price){
     console.log(cart);
     localStorage.setItem('Cart', JSON.stringify(cart));
 }
+
+
+// show product description
+function showDesc(){
+    document.getElementById('descShowBtn').style.display = 'none';
+    document.getElementById('descHideBtn').style.display = 'block';
+    const descPara = document.getElementById('description').style.height = '100%';
+}
+// Hide product description
+function hideDesc(){
+    document.getElementById('descShowBtn').style.display = 'inline';
+    document.getElementById('descHideBtn').style.display = 'none';
+    const descPara = document.getElementById('description').style.height = '8rem';
+}
