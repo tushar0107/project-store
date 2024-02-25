@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 # DEBUG = os.getenv('DEBUG') or False
 
-ALLOWED_HOSTS = ['my-store-49td.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1']
 
 # Application definition
 
@@ -143,6 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:8000',
+    'https://my-store-49td.onrender.com/'
 ]
 
 
