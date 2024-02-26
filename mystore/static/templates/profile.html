@@ -9,6 +9,32 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="search-input">
+        <form action="/product/" method="get">
+            <img src="{% static '/images/search.png' %}" alt="" onclick=openSearch() class="icon-img search">
+            <input type="text" id="header-input" onkeyup=suggestText() value="" name="product" placeholder="Search..">
+            <button type="submit"><img src="{% static '/images/next.png' %}" id="header-submit" class="icon-img"
+                    alt=""></button>
+            <img src="{% static '/images/close.png' %}" alt="" onclick=closeSearch() class="icon-img search">
+        </form>
+        <div id="suggestion">
+            <span>Try 'acer'</span>
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+    <div id="menu-drawer">
+        <ul id="menu-items">
+            <li><a href="javascript:void(0)" class="menu-close" onclick=closeMenu()><img
+                        src="{% static '/images/close.png' %}" alt=""></a></li>
+            <li><a href="#">Item 1</a></li>
+            <li><a href="#">Item 2</a></li>
+            <li><a href="#">Item 3</a></li>
+            <li><a href="#">Item 4</a></li>
+            <li><a href="#">Item 5</a></li>
+        </ul>
+    </div>
     <!-- header -->
     <div id="header">
         <h3 class="logo">{% if user.is_authenticated %}{{user.first_name}} {{user.last_name}}{% else %}Login or Sign Up{% endif %}</h3>
@@ -17,13 +43,14 @@
                 {% if user.is_authenticated %}
                     <li><a href="/logout"><img src="{% static '/images/logout.png' %}" alt="logout" class="icon-img search"></a></li>
                 {% endif %}
-                
+                <li><a href="/cart"><img src="{% static '/images/cart.png' %}" alt="" class="icon-img"></a></li>
+                <li><img src="{% static '/images/menu.png' %}" alt="" onclick=openMenu() class="icon-img"></li>
                 
             </ul>
         </div>
     </div>
-
-
+    
+   
     {% if user.is_authenticated %}
         <div id="profile-container">
             <div id="profile-head">
@@ -65,6 +92,9 @@
             <div id="login-modal">
                 <h3>Login</h3>
                 <form action="/login/" method="POST">
+                    {%for message in messages%}
+                    <span>{{message}}</span>
+                    {% endfor %}
                     {% csrf_token %}
                     <input type="number" name="username" placeholder="Enter mobile" required/>
                     <label for="password" class="password-toggle">
@@ -130,6 +160,13 @@
                 submitBtn.disabled = false;
             }
         }
+        document.addEventListener('DOMContentLoaded', function(){
+
+            // to set csrf value of the input fields
+            // since csrf token is already fetched at the beginning
+            // this input values should also have the same csrf token
+            document.querySelectorAll('input[type=hidden]')[0].setAttribute('value',document.cookie.split('csrftoken=')[1]);
+        });
 
     </script>
 
