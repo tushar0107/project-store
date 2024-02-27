@@ -143,7 +143,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ORIGIN_WHITELIST = [
-    'my-store-49td.onrender.com'
+    'https://my-store-49td.onrender.com',
+    'onrender.com',
 ]
 
 
