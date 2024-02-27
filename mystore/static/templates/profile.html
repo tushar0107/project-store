@@ -91,7 +91,7 @@
            
             <div id="login-modal">
                 <h3>Login</h3>
-                <form action="/login/" method="POST">
+                <form action="/login/" method="post">
                     {%for message in messages%}
                     <span>{{message}}</span>
                     {% endfor %}
@@ -111,7 +111,7 @@
     {% endif %}
     <div id="register-modal">
         <h3>Sign Up</h3>
-        <form action="/register/" method="POST">
+        <form action="/register/" method="post">
             {% csrf_token %}
             <input type="text" name="first_name" placeholder="First Name" required>
             <input type="text" name="last_name" placeholder="Last Name" required>
