@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-+mfi*!)7a)-##_swoxj3n5dwtw+df*cw3lc@v2(fj$d7^jc7%w
 DEBUG = False
 # DEBUG = os.getenv('DEBUG') or True
 
-ALLOWED_HOSTS = ['my-store-49td.onrender.com', '127.0.0.1:3000']
+ALLOWED_HOSTS = ['13.228.225.19','18.142.128.26','54.254.162.138','my-store-49td.onrender.com', '127.0.0.1:3000']
 
 # Application definition
 
