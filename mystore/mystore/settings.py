@@ -27,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECRET_KEY = os.getenv('SECRET_KEY')
-SECRET_KEY = process.env.SECRET_KEY
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = process.env.DEBUG
+DEBUG = os.environ.get('DEBUG')
 # DEBUG = os.getenv('DEBUG') or True
 
 ALLOWED_HOSTS = ['13.228.225.19','18.142.128.26','54.254.162.138','my-store-49td.onrender.com', '127.0.0.1:8000']
