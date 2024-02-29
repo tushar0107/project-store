@@ -34,6 +34,8 @@ DEBUG = os.environ.get('DEBUG')
 # DEBUG = os.getenv('DEBUG') or True
 
 ALLOWED_HOSTS = ['13.228.225.19', '18.142.128.26', '54.254.162.138', 'project-store-oy70.onrender.com', '127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['https://project-store-oy70.onrender.com']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
