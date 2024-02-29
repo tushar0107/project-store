@@ -33,7 +33,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 # DEBUG = os.getenv('DEBUG') or True
 
-ALLOWED_HOSTS = ['13.228.225.19','18.142.128.26','54.254.162.138','my-store-49td.onrender.com', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['13.228.225.19', '18.142.128.26', '54.254.162.138', 'project-store-oy70.onrender.com', '127.0.0.1:8000']
 
 # Application definition
 
