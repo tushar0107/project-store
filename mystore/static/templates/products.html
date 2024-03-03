@@ -36,7 +36,6 @@
                 if(user!='None'){
                     console.log('submitting form with', user, product_id);
                     var xhr = new XMLHttpRequest();
-                    let cookie = document.cookie;
                     var csrfToken = localStorage.getItem('csrfToken');
 
                     var formData = new FormData();

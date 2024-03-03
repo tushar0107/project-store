@@ -4,6 +4,7 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static '/images/favicon.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
     <script type="text/javascript" src="{% static '/js/index.js' %}"></script>
     <title>Document</title>
@@ -28,11 +29,11 @@
         <ul id="menu-items">
             <li><a href="javascript:void(0)" class="menu-close" onclick=closeMenu()><img
                         src="{% static '/images/close.png' %}" alt=""></a></li>
-            <li><a href="#">Item 1</a></li>
-            <li><a href="#">Item 2</a></li>
-            <li><a href="#">Item 3</a></li>
-            <li><a href="#">Item 4</a></li>
-            <li><a href="#">Item 5</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/profile">Orders</a></li>
+            <li>{% if user.is_authenticated %}<a href="/logout">Logout</a>{% else %}<a href="/login">Login</a>{% endif %}</li>
         </ul>
     </div>
     <!-- header -->

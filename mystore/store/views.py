@@ -286,7 +286,6 @@ def signup(request):
             user.save()
             # user = auth.authenticate(request,username=username,password=password)    #to save the new user object
             login(request,user)  #to log in the new user
-            messages.success(request,"Congrats🎉!! Your are a new member to us.😉")
             return redirect(index)
 
 def products(request):
@@ -319,13 +318,20 @@ def products_by_category(request):
     #fetch products from the database by filtering through categories
     pass
 
-
 def update_cart(request):
     if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        product = Product.objects.get(id=product_id)
-        Cart.objects.create(user=request.user, product=product)
-        return JsonResponse({'message':'Product has been added to Cart successfully'})
+        if(request.POST.get('method')=='delete'):
+            product_id = request.POST.get('product_id')
+            print(product_id)
+            product=Product.objects.get(id=product_id)
+            Cart.objects.filter(product=product).delete()
+            return JsonResponse({'message':'Product removed from cart'})
+        else:
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            Cart.objects.create(user=request.user, product=product)
+            return JsonResponse({'message':'Product has been added to Cart successfully'})
+      
     else:
         return JsonResponse({'error':'Invalid request Method'})
 
@@ -340,22 +346,13 @@ def cart(request):
             cartDict[i] = cartList.count(i)
             i.quantity = cartDict[i]
             i.tot_price = i.price * i.quantity
-    return render(request, 'cart.html', {'logo':'Cart','cartDict':cartDict})
+    return render(request, 'cart.html', {'logo':'Cart','cartDict':cartDict,'len_of_cart':len(cartDict)})
 
 
 def create_order_item(request):
     cart = request.POST.get('cart')
     cartArr = json.loads(cart)
     print(cartArr)
-    # for obj in cartArr:
-    #     product = Product.objects.get(id=obj['id'])
-    #     OrderItem.objects.create(
-    #         user = request.user,
-    #         product = product,
-    #         quantity = obj['quantity'],
-    #         total_amount = product.price * int(obj['quantity']),
-    #         details = ''
-    #     )
         
     return JsonResponse({'message':'Order created successfully'})
 
@@ -363,14 +360,18 @@ def create_order_item(request):
 @login_required(login_url='/login/')
 def checkout(request,id=None):
     user = User.objects.get(id=request.user.id)
-    customer = Customer.objects.get(user=user)
-    total_price = 0
-    order_items = OrderItem.objects.filter(user=user)
+    if(Customer.objects.filter(user=user).exists()):
+        print(user)
+        customer = Customer.objects.get(user=user)
+        total_price = 0
+        order_items = OrderItem.objects.filter(user=user)
 
-    for order in order_items:
-        total_price = total_price + order.total_amount
-    messages.success(request,'Order recorded successfully. Please confirm the order and other details')
-    return render(request, 'checkout.html', {'logo':'Checkout','customer':customer, 'total_amount':total_price})
+        for order in order_items:
+            total_price = total_price + order.total_amount
+        messages.success(request,'Order recorded successfully. Please confirm the order and other details')
+        return render(request, 'checkout.html', {'logo':'Checkout','customer':customer, 'total_amount':total_price})
+    else:
+        return JsonResponse({'message': 'Need More customer details. Please fill out your details from the profile'},status=404)
 
 
 def confirm_order(request):
