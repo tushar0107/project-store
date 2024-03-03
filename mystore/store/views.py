@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 
 from django.http import JsonResponse
 from django.middleware import csrf
@@ -84,6 +86,7 @@ def get_csrf_token(request):
 #             'email': user.email
 #         })
 
+@method_decorator(csrf_protect, name='dispatch')
 class LoginView(APIView):
     
     # user login view
@@ -125,6 +128,7 @@ class LoginView(APIView):
                 'message': 'Please Login.'
             })
 
+@method_decorator(csrf_protect, name='dispatch')
 class RegisterUser(APIView):
 
     def post(self, request):
