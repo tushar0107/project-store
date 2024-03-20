@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Home{% endblock %}
+{% block description %} {{'description'}} {% endblock %}
+{% block keywords %} {{'keywords'}} {% endblock %}
+
+{% block title %}{{search}}{% endblock %}
 
 {% block content %}
 
@@ -11,18 +14,18 @@
     <div id="product-container">
         {% for product in products %}
 
-        <div class="product-card">
+        <a href="/product/{{product.get_absolute_url}}" class="product-card">
             <img src="/media/{{product.image}}" alt="" class="product-img">
             <div class="product-details">
-                <strong class="product-name">{{product.name|truncatewords_html:25}}</strong>
+                <span class="product-name">{{product.name|truncatewords_html:25}}</span>
                 <!-- <p class="product-desc">{{product.desc|truncatewords_html:15}}</p> -->
                 <p class="product-price">{{product.price}}/-</p>
-                <div class="prod-btns">
-                    <button class="view-btn btn" onclick="gotoProduct('{{product.id}}')"><i class="fa-regular fa-eye"></i></button>
+                <!-- <div class="prod-btns">
                     <button class="cart-btn-outline" onclick="submitCart('{{user.id}}','{{product.id}}')"><i class="fa-solid fa-cart-plus"></i></button>
-                </div>
+                    <button class="like-btn btn" onclick="gotoProduct('{{product.id}}')"><i class="fa-regular fa-heart"></i></button>
+                </div> -->
             </div>
-        </div>
+        </a>
         {% endfor %}
     </div>
         {% else %}

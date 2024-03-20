@@ -47,12 +47,20 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/', default=None)
     category = models.ManyToManyField(Category)
+    slug_field = models.SlugField(max_length=300,null=True,blank=True)
 
     def __str__(self) -> str:
         return str(f'[{self.pk}] {self.name}')
     
+    def save(self,*args,**kwargs):
+        self.slug_field = slugify(self.name +'-'+ str(self.pk))
+        super(Product, self).save(*args,**kwargs)
+
     def getBrand(self):
         return self.brand
+    
+    def get_absolute_url(self):
+        return self.slug_field
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -306,9 +306,9 @@ def products(request):
         num_of_products = '0'
         return render(request, 'products.html',{'num_of_products':num_of_products,'search':search_product,})
 
-def product(request, id):
-    if Product.objects.filter(id=id).exists():
-        product = Product.objects.get(id=id)
+def product(request, slug):
+    if Product.objects.filter(slug_field=slug).exists():
+        product = Product.objects.get(slug_field=slug)
         return render(request, 'product.html',{'logo':'STORE','product':product})
     else:
         return render(request, '404page.html')
