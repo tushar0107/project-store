@@ -32,6 +32,7 @@ a {
 section.site-content{
   width: min(1320px,100%);
   margin: 1rem auto;
+  padding: 0 1rem;
 }
 #header {
   width: 100%;
@@ -387,9 +388,6 @@ p.product-price {
   margin: 0 auto;
   max-width: 400px;
   flex: 1 1 300px;
-  position: sticky;
-  top: 5rem;
-  z-index: 10;
 }
 #view-product #product-desc {
   margin: 0 auto;
@@ -687,9 +685,8 @@ form#checkout-confirm-form{
   margin: 1rem auto;
   font-size: 1rem;
 }
-/* If the browser window is 612px or smaller, */
-/* modify this media query acordingly to set it for the desktop view */
 /* this site should have mobile first design */
+/* modify this media query acordingly to set it for the desktop view */
 @media only screen and (min-width: 612px) {
   #checkout-form .checkout-product-card {
     align-items: center;
@@ -747,6 +744,13 @@ form#checkout-confirm-form{
   }
   .cart-product .modify-action-btns{
     flex-direction: row;
+  }
+}
+@media only screen and (min-width: 894px) {
+  #view-product #product-image {
+    position: sticky;
+    top: 5rem;
+    z-index: 10;
   }
 }
 
