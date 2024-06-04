@@ -27,6 +27,14 @@ CITIES = (('Nagpur','Nagpur'),
               ('Nashik','Nashik'),
               ('Aurangabad','Aurangabad'),
               ('Wardha','Wardha'))
+
+# to replace the default __str__ return function for User
+def get_first_name(self):
+    return f'{self.first_name} {self.last_name}'
+
+# returns first name and last name for the user
+User.add_to_class("__str__", get_first_name)
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -94,7 +102,7 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=20,choices=PAY_STATUS, default='Pending')
     order_status = models.CharField(max_length=20,choices=STATUS_CHOICES, default='Pending')
     def __str__(self):
-        return str(f'{self.user.username} : payment {self.payment_status}')
+        return str(f'{self.user.first_name} {self.user.last_name} : payment {self.payment_status}')
 
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
