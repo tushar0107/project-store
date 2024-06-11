@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 
 from .models import *
+from django.db.models import Count
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
@@ -338,9 +339,10 @@ def update_cart(request):
 
 @login_required(login_url='/login/')
 def cart(request):
-    cartQuery = Cart.objects.filter(user=request.user)
-    cartList = [item.product for item in cartQuery]
+    cartQuery = Cart.objects.filter(user=request.user)# gets cart objects for current user
+    cartList = [item.product for item in cartQuery] #converts the queryset into list
     cartDict = {}       #dictionary usage is correct here
+    # modify cartDict to add quantity of products and total price to the cart
     for i in cartList:
         if i not in cartDict:
             cartDict[i] = cartList.count(i)

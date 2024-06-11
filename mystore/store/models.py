@@ -50,7 +50,7 @@ class Product(models.Model):
     slug_field = models.SlugField(max_length=300,null=True,blank=True)
 
     def __str__(self) -> str:
-        return str(f'[{self.pk}] {self.name}')
+        return str(f'[{self.pk}] {self.name[:15]}')
     
     def save(self,*args,**kwargs):
         self.slug_field = slugify(self.name +'-'+ str(self.pk))
@@ -94,7 +94,7 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=20,choices=PAY_STATUS, default='Pending')
     order_status = models.CharField(max_length=20,choices=STATUS_CHOICES, default='Pending')
     def __str__(self):
-        return str(f'{self.user.username} : payment {self.payment_status}')
+        return str(f'{self.user.first_name} {self.user.last_name} : payment {self.payment_status}')
 
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
