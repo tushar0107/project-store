@@ -291,8 +291,10 @@ def signup(request):
 
 def products(request):
     #fetch out the products from the database with the filter
+    queryset = None
     search_product = request.GET['product']
-    products_list = list(Product.objects.filter(name__icontains=search_product))
+    queryset = Product.objects.filter(name__icontains=search_product)
+    products_list = list(queryset)
     if len(products_list)!=0:
         #counts the number of products found in the database
         num_of_products = len(products_list)
@@ -310,13 +312,16 @@ def products(request):
 def product(request, slug):
     if Product.objects.filter(slug_field=slug).exists():
         product = Product.objects.get(slug_field=slug)
-        return render(request, 'product.html',{'logo':'STORE','product':product})
+        category = list(product.category.all())
+        return render(request, 'product.html',{'logo':'STORE','product':product, 'category':category})
     else:
         return render(request, '404page.html')
 
 
 def products_by_category(request):
     #fetch products from the database by filtering through categories
+    category = request.GET['category']
+
     pass
 
 def update_cart(request):

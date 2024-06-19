@@ -55,9 +55,6 @@ class Product(models.Model):
     def save(self,*args,**kwargs):
         self.slug_field = slugify(self.name +'-'+ str(self.pk))
         super(Product, self).save(*args,**kwargs)
-
-    def getBrand(self):
-        return self.brand
     
     def get_absolute_url(self):
         return self.slug_field

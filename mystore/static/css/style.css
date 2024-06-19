@@ -398,6 +398,15 @@ p.product-price {
   overflow: hidden;
   white-space: pre-line;
 }
+.categories .category {
+  display: inline-block;
+  padding: 0 1rem;
+  border: 2px solid #73beff;
+  border-radius: 100px;
+  color: #1a83fc;
+  font-weight: bold;
+  background-color: #d7ecff;
+}
 #view-product #action-btns {
   background-color: white;
   position: sticky;
