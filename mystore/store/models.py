@@ -58,7 +58,7 @@ class Product(models.Model):
     slug_field = models.SlugField(max_length=300,null=True,blank=True)
 
     def __str__(self) -> str:
-        return str(f'[{self.pk}] {self.name}')
+        return str(f'[{self.pk}] {self.name[:15]}')
     
     def save(self,*args,**kwargs):
         self.slug_field = slugify(self.name +'-'+ str(self.pk))

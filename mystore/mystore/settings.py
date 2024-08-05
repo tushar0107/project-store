@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 # DEBUG = os.getenv('DEBUG') or True
 
-ALLOWED_HOSTS = ['13.228.225.19', '18.142.128.26', '54.254.162.138', 'project-store-oy70.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['project-store-oy70.onrender.com', '127.0.0.1','tushar07.pythonanywhere.com/']
 CSRF_TRUSTED_ORIGINS = ['https://project-store-oy70.onrender.com']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
+	'portfolio',
     'corsheaders',
     'rest_framework',
     'fontawesomefree',
@@ -146,6 +147,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = [
     'https://my-store-49td.onrender.com',
     'http://127.0.0.1:3000',
+	'https://tushar0107.github.io'
 ]
 
 
