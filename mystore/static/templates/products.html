@@ -11,21 +11,23 @@
     <!-- products here -->
     <h4 class="product-count">{{num_of_products}} products for '{{search}}'</h4>
     {% if products %}
-    <div id="product-container">
+    <div id="products-container">
         {% for product in products %}
 
-        <a href="/product/{{product.get_absolute_url}}" class="product-card">
-            <img src="/media/{{product.image}}" alt="" class="product-img">
+        <a href="/product/{{product.get_absolute_url}}"  class="product-card">
+            <img src="/media/{{product.image}}" alt="">
             <div class="product-details">
-                <span class="product-name">{{product.name|truncatewords_html:25}}</span>
-                <!-- <p class="product-desc">{{product.desc|truncatewords_html:15}}</p> -->
-                <p class="product-price">{{product.price}}/-</p>
-                <!-- <div class="prod-btns">
-                    <button class="cart-btn-outline" onclick="submitCart('{{user.id}}','{{product.id}}')"><i class="fa-solid fa-cart-plus"></i></button>
-                    <button class="like-btn btn" onclick="gotoProduct('{{product.id}}')"><i class="fa-regular fa-heart"></i></button>
-                </div> -->
+                <span class="price">
+                    {{product.price}}/-
+                </span>
+                <span class="product-name">
+                    {{product.name|truncatewords_html:10}}
+                </span>
+
             </div>
+            <span class="like-btn"><img src="/static/images/{{ 'heart.png' }}" alt=""></span>
         </a>
+
         {% endfor %}
     </div>
         {% else %}
