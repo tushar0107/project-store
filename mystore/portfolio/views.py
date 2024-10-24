@@ -16,8 +16,6 @@ from email import encoders
 from email.utils import formatdate
 
 # password  = 'eummrgmlgzgxpdiq'
-smtp = smtplib.SMTP('smtp.gmail.com',587)
-smtp.starttls()
 
 
 def getMail(request):
@@ -32,6 +30,8 @@ def getMail(request):
 
 # email sender function
 def send_mail(sender,receiver,subject,body,password,files=None):
+	smtp = smtplib.SMTP('smtp.gmail.com',587)
+	smtp.starttls()
 	smtp.login(sender,password)
 
 	mail = MIMEMultipart()
@@ -51,4 +51,5 @@ def send_mail(sender,receiver,subject,body,password,files=None):
 	mail.attach(part)
 
 	res = smtp.sendmail(sender,receiver,mail.as_string())
+	smtp.close()
 	return res
