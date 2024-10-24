@@ -33,7 +33,7 @@ DEBUG = os.environ.get('DEBUG')
 # DEBUG = os.getenv('DEBUG') or True
 
 ALLOWED_HOSTS = ['127.0.0.1','tushar07.pythonanywhere.com','tushar0107.github.io']
-CSRF_TRUSTED_ORIGINS = ['tushar0107.github.io']
+CSRF_TRUSTED_ORIGINS = ['https://tushar0107.github.io']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
