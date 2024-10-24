@@ -1,8 +1,6 @@
 .env
 /myenv
-db.sqlite
+db.sqlite3
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+__pycache__/
+migrations/
