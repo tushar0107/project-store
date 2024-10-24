@@ -32,8 +32,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 # DEBUG = os.getenv('DEBUG') or True
 
-ALLOWED_HOSTS = ['project-store-oy70.onrender.com', '127.0.0.1','tushar07.pythonanywhere.com/','tushar0107.github.io']
-CSRF_TRUSTED_ORIGINS = []
+ALLOWED_HOSTS = ['127.0.0.1','tushar07.pythonanywhere.com','tushar0107.github.io']
+CSRF_TRUSTED_ORIGINS = ['tushar0107.github.io']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
