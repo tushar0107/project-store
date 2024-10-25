@@ -35,7 +35,7 @@ class ProductListView(viewsets.ModelViewSet):
     def get(self):
         search_product = self.request.query_params.get('search')
         order = self.request.query_params.get('order')
-        category = self.request.query_params.get('category')
+        category = self.request.query_params.get('categories')
         queryset1 = Product.objects.filter(name__icontains=search_product)
         queryset2 = Product.objects.filter(desc__icontains=search_product)
         #searches for products only if order and category parameter is passed
@@ -291,21 +291,44 @@ def signup(request):
 
 def products(request):
     #fetch out the products from the database with the filter
-    search_product = request.GET['product']
-    products_list = list(Product.objects.filter(name__icontains=search_product))
+    search_product = request.GET.get('product')
+    category = request.GET.get('categories')
+    order = request.GET.get('order')
+
+    products_list = Product.objects.none()
+    if search_product is not None:
+        products_list = Product.objects.filter(name__icontains=search_product)
+    if category is not None:
+        categories = Category.objects.filter(slug=category).only('id')
+        print(categories)
+        products_by_category = Product.objects.filter(category__in=categories)
+
+        if order is not None:
+            products_list = list(products_list.union(products_by_category).order_by(order))
+        else:
+            products_list = list(products_list.union(products_by_category))
+    
     if len(products_list)!=0:
         #counts the number of products found in the database
         num_of_products = len(products_list)
+        if search_product is not None:
+            search_param = search_product 
+        elif category is not None:
+            search_param = category
         return render(request,'products.html',{
             'products':products_list,
             'num_of_products':num_of_products,
-            'search':search_product,
+            'search':search_param,
             'logo':"STORE"})
 
     else:
         #returns nothing if no products found with the relevant name
         num_of_products = '0'
-        return render(request, 'products.html',{'num_of_products':num_of_products,'search':search_product,})
+        if search_product is not None:
+            search_param = search_product 
+        elif category is not None:
+            search_param = category
+        return render(request, 'products.html',{'logo':"STORE",'num_of_products':num_of_products,'search':search_param,})
 
 def product(request, slug):
     if Product.objects.filter(slug_field=slug).exists():

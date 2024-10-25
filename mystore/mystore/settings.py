@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from env import SECRET_KEY,DEBUG
 dotenv_path = os.path.join(os.path.dirname(__file__),'.env')
 
 load_dotenv()
@@ -26,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = DEBUG
 # DEBUG = os.getenv('DEBUG') or True
 
 ALLOWED_HOSTS = ['127.0.0.1','tushar07.pythonanywhere.com','tushar0107.github.io']

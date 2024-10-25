@@ -43,7 +43,7 @@ button.btn {
   font-weight: bold;
 }
 button.cancel-btn {
-  background-color: var(--primarybgcolor);
+  background-color: var(--secondarybgcolor);
   color: var(--primaryfontcolor);
   margin-left: 1rem;
   border-radius: 8px;
@@ -127,9 +127,10 @@ section.site-content{
   width: 100%;
   border: none;
   outline: none;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   background-color: transparent;
   transition: 0.3s ease;
+  font-size: 20px;
 }
 #search-input button {
   display: block;
@@ -175,6 +176,10 @@ ul#menu-items li {
   width: 100%;
   margin: 0;
 }
+li.close-item {
+  display: flex;
+  justify-content: flex-end;
+}
 ul#menu-items li a {
   display: block;
   width: 100%;
@@ -187,7 +192,7 @@ ul#menu-items li a:hover {
 }
 ul#menu-items li .menu-close {
   padding: 1rem;
-  text-align: right;
+  width: fit-content;
 }
 
 /* page content */
@@ -355,23 +360,26 @@ h2 {
   text-align: center;
 }
 .product-card{
-	position: relative;
-	box-shadow: var(--boxShadow);
-	background-color: var(--primarybgcolor);
-  padding: 0.5rem;
+  position: relative;
+  box-shadow: var(--boxShadow);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
 }
-.product-card img{
+.product-card > img{
   width: 100%;
   aspect-ratio: 1;
+  padding: .5rem;
   object-fit: contain;
   object-position: bottom;
 }
 .product-details{
 	display: flex;
-	flex-direction: column;
-	gap: .3rem;
-	margin-top: .5rem;
-	padding: .5rem;
+  flex-direction: column;
+  gap: .3rem;
+  margin-top: .5rem;
+  padding: .5rem;
+  height: 100%;
 }
 .like-btn {
   width: 35px;
@@ -382,14 +390,17 @@ h2 {
   border-radius: 50%;
   background-color: #ffffff96;
 }
-
+.like-btn img {
+  display: block;
+  width: 100%;
+}
 .product-card img.like-pink {
   z-index: 4;
 }
 .product-details .price {
   color: #20975a;
-  /* color: #3bc47e; */
   font-weight: 500;
+  font-size: 18px;
 }
 .prod-btns {
   display: flex;
@@ -410,6 +421,7 @@ h2 {
   align-items: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
+  padding: 2rem 0;
 }
 #view-product #product-image  img{
   width: 100%;
@@ -586,6 +598,7 @@ div#profile-head {
   font-size: 1.5rem;
   outline: none;
   border: none;
+  background-color: transparent;
 }
 
 
@@ -642,6 +655,7 @@ form#order-form {
   font-size: 20px;
   border: none;
   color: #02972f;
+  background-color: transparent;
 }
 .cart-product input.quantity{
   text-align: right;
@@ -651,7 +665,6 @@ form#order-form {
   z-index: 1;
   bottom: 0;
   width: min(100%,967px);
-  background-color: white;
 }
 
 #checkout-actions{
@@ -781,6 +794,12 @@ form#checkout-confirm-form{
     position: sticky;
     top: 5rem;
     z-index: 10;
+  }
+}
+@media only screen and (max-width: 500px) {
+  
+  #products-container{
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
 

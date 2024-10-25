@@ -20,30 +20,30 @@
         <div id="featured-products-container">
             <h2>Featured Products</h2>
             <div id="featured-products">
-                <div class="featured-product-card">
+                <a href="/product/?categories=womens" class="featured-product-card">
                     <img src="{% static '/images/fashion-women.jpg' %}" class="featured-product-img" alt="">
                     <div class="featured-text">
                         <span>Womens</span>
                     </div>
-                </div>
-                <div class="featured-product-card">
+                </a>
+                <a href="/product/?categories=mens" class="featured-product-card">
                     <img src="{% static '/images/fashion-men.jpeg' %}" class="featured-product-img" alt="">
                     <div class="featured-text">
                         <span>Mens</span>
                     </div>
-                </div>
-                <div class="featured-product-card">
+                </a>
+                <a href="/product/?categories=kids" class="featured-product-card">
                     <img src="{% static '/images/fashion-kid.jpeg' %}" class="featured-product-img" alt="">
                     <div class="featured-text">
                         <span>Kids</span>
                     </div>
-                </div>
-                <div class="featured-product-card">
+                </a>
+                <a href="/product/?categories=formals" class="featured-product-card">
                     <img src="{% static '/images/formal-fashion.jpg' %}" class="featured-product-img" alt="">
                     <div class="featured-text">
                         <span>Formals</span>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -51,3 +51,8 @@
     
     {% endblock %}
 
+
+{% block footer %}
+{% include 'footer.html' %}
+
+{% endblock %}
