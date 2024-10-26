@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'fontawesomefree',
+    'chemically',
 ]
 
 MIDDLEWARE = [
@@ -146,7 +147,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ORIGIN_WHITELIST = [
-    'https://my-store-49td.onrender.com',
+    'https://chemically.vercel.app',
     'http://127.0.0.1:3000',
 	'https://tushar0107.github.io'
 ]
