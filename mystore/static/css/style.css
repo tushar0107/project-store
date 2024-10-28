@@ -34,7 +34,7 @@ body {
 button.btn {
   background-color: var(--primary);
   border-radius: 8px;
-  padding: 1rem 1.5rem;
+  padding: .8rem 1rem;
   color: var(--primarydarkcolor);
   border: none;
   outline: none;
@@ -47,7 +47,7 @@ button.cancel-btn {
   color: var(--primaryfontcolor);
   margin-left: 1rem;
   border-radius: 8px;
-  padding: 1rem 1.5rem;
+  padding: .8rem 1rem;
   border: none;
   outline: none;
   cursor: pointer;
@@ -62,7 +62,6 @@ a {
 section.site-content{
   width: min(1320px,100%);
   margin: 1rem auto;
-  padding: 0 1rem;
 }
 #header {
   width: 100%;
@@ -354,22 +353,23 @@ h2 {
 #products-container{
 	display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 1rem;
+	gap: 1px;
 }
 .not-found{
   text-align: center;
 }
 .product-card{
   position: relative;
-  box-shadow: var(--boxShadow);
+  /* box-shadow: var(--boxShadow); */
   background-color: white;
   display: flex;
   flex-direction: column;
+  padding: .5rem;
 }
 .product-card > img{
   width: 100%;
   aspect-ratio: 1;
-  padding: .5rem;
+  /* padding: .5rem; */
   object-fit: contain;
   object-position: bottom;
 }
@@ -378,8 +378,8 @@ h2 {
   flex-direction: column;
   gap: .3rem;
   margin-top: .5rem;
-  padding: .5rem;
   height: 100%;
+  font-size: 14px;
 }
 .like-btn {
   width: 35px;
@@ -434,6 +434,7 @@ h2 {
 #view-product #product-desc {
   margin: 0 auto;
   flex: 1 1 546px;
+  padding: 0 .5rem;
 }
 #product-desc p{
   height: 8rem;
@@ -445,7 +446,7 @@ h2 {
   position: sticky;
   z-index: 1;
   bottom: 0;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
